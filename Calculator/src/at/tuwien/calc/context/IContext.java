@@ -1,6 +1,6 @@
 package at.tuwien.calc.context;
 
-import at.tuwien.calc.model.DataEntry;
+import at.tuwien.calc.model.IDataEntry;
 
 
 /**
@@ -46,7 +46,7 @@ public interface IContext {
      * @param <T>          Data entry type.
      * @return Null if the register was previously empty, otherwise the old register value is returned.
      */
-    <T extends DataEntry> T setRegisterValue(Character registerName, T value);
+    <T extends IDataEntry<?>> T setRegisterValue(Character registerName, T value);
 
     /**
      * Returns the register value at the given register name position. This has to be a
@@ -55,9 +55,9 @@ public interface IContext {
      * @param registerName Register name between a-z (inclusively).
      * @param <T>          Data entry type.
      * @return Null if no value is available, otherwise the reguster value.
-     * @see IContext#setRegisterValue(Character, DataEntry)
+     * @see IContext#setRegisterValue(Character, IDataEntry)
      */
-    <T extends DataEntry> T getRegisterValue(Character registerName);
+    <T extends IDataEntry<?>> T getRegisterValue(Character registerName);
 
     /**
      * Pushes the given data entry onto the data stack. How this is handled is completely
@@ -66,7 +66,7 @@ public interface IContext {
      * @param data Data entry.
      * @param <T>  Data entry type.
      */
-    <T extends DataEntry> void pushToDataStack(T data);
+    <T extends IDataEntry<?>> void pushToDataStack(T data);
 
     /**
      * Pops the latest data entry from the data stack.
@@ -74,7 +74,7 @@ public interface IContext {
      * @param <T> Data entry type.
      * @return Data entry.
      */
-    <T extends DataEntry> T popFromDataStack();
+    <T extends IDataEntry<?>> T popFromDataStack();
 
     /**
      * Writes the given string to the output stream.

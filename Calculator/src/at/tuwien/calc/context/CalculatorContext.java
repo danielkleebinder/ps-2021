@@ -1,11 +1,8 @@
 package at.tuwien.calc.context;
 
-import at.tuwien.calc.model.DataEntry;
+import at.tuwien.calc.model.IDataEntry;
+import at.tuwien.calc.stream.IOutputStream;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -22,15 +19,15 @@ public class CalculatorContext implements IContext {
      * is 41 since prime numbers typically generate less hash collisions
      * in naive implementations.
      */
-    private final Map<Character, DataEntry> register = new HashMap<>(41);
-    private final Stack<DataEntry> dataStack = new Stack<>();
+    private final Map<Character, IDataEntry<?>> register = new HashMap<>(41);
+    private final Stack<IDataEntry<?>> dataStack = new Stack<>();
 
     private int operationMode = 0;
 
-    private BufferedWriter outputStream;
+    private IOutputStream outputStream;
 
-    public CalculatorContext(OutputStream outputStream) {
-        this.outputStream = new BufferedWriter(new OutputStreamWriter(outputStream));
+    public CalculatorContext(IOutputStream outputStream) {
+        this.outputStream = outputStream;
     }
 
     @Override
@@ -49,7 +46,7 @@ public class CalculatorContext implements IContext {
     }
 
     @Override
-    public <T extends DataEntry> T setRegisterValue(Character registerName, T value) {
+    public <T extends IDataEntry<?>> T setRegisterValue(Character registerName, T value) {
         if (registerName < 'a' || registerName > 'z') {
             throw new IllegalArgumentException("Register name must be between a and z (inclusively)");
         }
@@ -57,7 +54,7 @@ public class CalculatorContext implements IContext {
     }
 
     @Override
-    public <T extends DataEntry> T getRegisterValue(Character registerName) {
+    public <T extends IDataEntry<?>> T getRegisterValue(Character registerName) {
         if (registerName < 'a' || registerName > 'z') {
             throw new IllegalArgumentException("Register name must be between a and z (inclusively)");
         }
@@ -65,23 +62,18 @@ public class CalculatorContext implements IContext {
     }
 
     @Override
-    public <T extends DataEntry> void pushToDataStack(T data) {
+    public <T extends IDataEntry<?>> void pushToDataStack(T data) {
         dataStack.push(data);
     }
 
     @Override
-    public <T extends DataEntry> T popFromDataStack() {
+    public <T extends IDataEntry<?>> T popFromDataStack() {
         return (T) dataStack.pop();
     }
 
     @Override
     public void write(String output) {
-        try {
-            outputStream.write(output);
-            outputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        outputStream.write(output);
     }
 
     @Override
