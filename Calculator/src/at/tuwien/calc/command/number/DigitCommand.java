@@ -1,7 +1,8 @@
-package at.tuwien.calc.command;
+package at.tuwien.calc.command.number;
 
+import at.tuwien.calc.command.ICommand;
 import at.tuwien.calc.context.IContext;
-import at.tuwien.calc.model.FloatDataEntry;
+import at.tuwien.calc.model.DoubleDataEntry;
 
 import java.util.regex.Pattern;
 
@@ -26,14 +27,14 @@ public class DigitCommand implements ICommand {
         int digit = Integer.parseInt(String.valueOf(command));
 
         if (context.getOperationMode() == -1) {
-            FloatDataEntry dataEntry = context.popFromDataStack();
-            float newValue = dataEntry.get() * 10 + digit;
-            context.pushToDataStack(new FloatDataEntry(newValue));
+            DoubleDataEntry dataEntry = context.popFromDataStack();
+            double newValue = dataEntry.get() * 10 + digit;
+            context.pushToDataStack(new DoubleDataEntry(newValue));
         }
 
         if (context.getOperationMode() == 0) {
             context.setOperationMode(-1);
-            context.pushToDataStack(new FloatDataEntry((float) digit));
+            context.pushToDataStack(new DoubleDataEntry(digit));
         }
     }
 }

@@ -69,6 +69,14 @@ public interface IContext {
     <T extends IDataEntry<?>> void pushToDataStack(T data);
 
     /**
+     * Takes a look at the top most entry of the data stack but does not remove it.
+     *
+     * @param <T> Data entry type.
+     * @return Data entry.
+     */
+    <T extends IDataEntry<?>> T peekDataStack();
+
+    /**
      * Pops the latest data entry from the data stack.
      *
      * @param <T> Data entry type.

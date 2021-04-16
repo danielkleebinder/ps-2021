@@ -33,12 +33,9 @@ public class Interpreter {
 
         while (commandStream.hasNextCommand()) {
             final Character currentCommand = commandStream.remove();
-            var commands = commandRegistry.getCommandsFor(currentCommand);
-            if (commands.size() > 0) {
-                commands.forEach(commandInterpreter -> commandInterpreter.apply(context, currentCommand));
-            } else {
-                commandRegistry.getInvalidCharacterCommand().apply(context, currentCommand);
-            }
+            commandRegistry
+                    .getCommandsFor(currentCommand)
+                    .forEach(commandInterpreter -> commandInterpreter.apply(context, currentCommand));
         }
 
         return context;

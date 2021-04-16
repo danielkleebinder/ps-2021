@@ -4,27 +4,27 @@ import java.util.Objects;
 
 
 /**
- * Represents a data entry holding a floating points number.
+ * Represents a data entry holding a single character.
  */
-public class FloatDataEntry implements IDataEntry<Float> {
+public class CharacterDataEntry implements IDataEntry<Character> {
 
-    private float data;
+    private char data;
 
-    public FloatDataEntry(float data) {
+    public CharacterDataEntry(char data) {
         this.data = data;
     }
 
     @Override
-    public Float get() {
-        return data;
+    public Character get() {
+        return null;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FloatDataEntry dataEntry = (FloatDataEntry) o;
-        return Float.compare(dataEntry.data, data) == 0;
+        CharacterDataEntry that = (CharacterDataEntry) o;
+        return data == that.data;
     }
 
     @Override
@@ -34,6 +34,6 @@ public class FloatDataEntry implements IDataEntry<Float> {
 
     @Override
     public String toString() {
-        return "" + data;
+        return Character.toString(data);
     }
 }

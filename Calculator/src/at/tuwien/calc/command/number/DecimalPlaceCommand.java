@@ -1,13 +1,15 @@
-package at.tuwien.calc.command;
+package at.tuwien.calc.command.number;
 
+import at.tuwien.calc.command.ICommand;
 import at.tuwien.calc.context.IContext;
-import at.tuwien.calc.model.FloatDataEntry;
+import at.tuwien.calc.model.DoubleDataEntry;
 
 import java.util.regex.Pattern;
 
 
 /**
- *
+ * This command can only be run if the operation mode is less than -1. It multiplies
+ * the given digit by 10^(opMode+1) and add the result to the top value of the data stack.
  */
 public class DecimalPlaceCommand implements ICommand {
 
@@ -28,9 +30,9 @@ public class DecimalPlaceCommand implements ICommand {
 
         int opMode = context.getOperationMode();
         int digit = Integer.parseInt(String.valueOf(command));
-        FloatDataEntry dataEntry = context.popFromDataStack();
+        DoubleDataEntry dataEntry = context.popFromDataStack();
         double newValue = dataEntry.get() + digit * Math.pow(10, opMode + 1);
-        context.pushToDataStack(new FloatDataEntry((float) newValue));
+        context.pushToDataStack(new DoubleDataEntry(newValue));
         context.setOperationMode(opMode - 1);
     }
 }

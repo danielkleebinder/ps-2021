@@ -1,7 +1,8 @@
-package at.tuwien.calc.command;
+package at.tuwien.calc.command.number;
 
+import at.tuwien.calc.command.ICommand;
 import at.tuwien.calc.context.IContext;
-import at.tuwien.calc.model.FloatDataEntry;
+import at.tuwien.calc.model.DoubleDataEntry;
 
 import java.util.regex.Pattern;
 
@@ -22,6 +23,6 @@ public class DotCommand implements ICommand {
     @Override
     public void apply(IContext context, Character command) {
         context.setOperationMode(-2);
-        context.pushToDataStack(new FloatDataEntry(0.0f));
+        context.pushToDataStack(new DoubleDataEntry(0.0));
     }
 }
