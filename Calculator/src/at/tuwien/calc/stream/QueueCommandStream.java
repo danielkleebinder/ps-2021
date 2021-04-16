@@ -32,4 +32,9 @@ public class QueueCommandStream implements ICommandStream {
     public Character remove() {
         return commandQueue.poll();
     }
+
+    @Override
+    public String toString() {
+        return "CommandQueue=" + commandQueue;
+    }
 }

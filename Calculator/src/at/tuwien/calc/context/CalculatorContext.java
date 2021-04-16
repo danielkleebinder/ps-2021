@@ -71,6 +71,9 @@ public class CalculatorContext implements IContext {
 
     @Override
     public <T extends IDataEntry<?>> T peekDataStack() {
+        if (dataStack.empty()) {
+            return null;
+        }
         return (T) dataStack.peek();
     }
 

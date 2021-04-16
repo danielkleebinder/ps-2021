@@ -23,6 +23,11 @@ public class ApplyImmediatelyCommand implements ICommand {
 
     @Override
     public void apply(IContext context, Character command) {
+        if (context.getOperationMode() != 0) {
+            // Only available in execution mode
+            return;
+        }
+
         if (!(context.peekDataStack() instanceof ListDataEntry)) {
             // The top entry on the data stack has to be a list entry to read
             // commands from and add them to the command stream.
