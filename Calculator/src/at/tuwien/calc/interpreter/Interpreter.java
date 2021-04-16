@@ -1,5 +1,9 @@
 package at.tuwien.calc.interpreter;
 
+import at.tuwien.calc.command.annotation.DecimalConstructionMode;
+import at.tuwien.calc.command.annotation.ExecutionMode;
+import at.tuwien.calc.command.annotation.IntegerConstructionMode;
+import at.tuwien.calc.command.annotation.ListConstructionMode;
 import at.tuwien.calc.context.CalculatorContext;
 import at.tuwien.calc.context.IContext;
 import at.tuwien.calc.stream.ICommandStream;
@@ -35,6 +39,12 @@ public class Interpreter {
             final Character currentCommand = commandStream.remove();
             commandRegistry
                     .getCommandsFor(currentCommand)
+                    .stream()
+                    .filter(interpreter -> (interpreter.getClass().getAnnotations().length <= 0) ||
+                            (interpreter.getClass().isAnnotationPresent(ExecutionMode.class) && context.getOperationMode() == 0) ||
+                            (interpreter.getClass().isAnnotationPresent(IntegerConstructionMode.class) && context.getOperationMode() == -1) ||
+                            (interpreter.getClass().isAnnotationPresent(DecimalConstructionMode.class) && context.getOperationMode() < -1) ||
+                            (interpreter.getClass().isAnnotationPresent(ListConstructionMode.class) && context.getOperationMode() > 0))
                     .forEach(commandInterpreter -> commandInterpreter.apply(context, currentCommand));
         }
 

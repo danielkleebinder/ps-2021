@@ -1,6 +1,8 @@
 package at.tuwien.calc.command.list;
 
 import at.tuwien.calc.command.ICommand;
+import at.tuwien.calc.command.annotation.ExecutionMode;
+import at.tuwien.calc.command.annotation.ListConstructionMode;
 import at.tuwien.calc.context.IContext;
 import at.tuwien.calc.model.ListDataEntry;
 
@@ -11,6 +13,8 @@ import java.util.regex.Pattern;
  * Essential command for list construction which adds ’(’ to the list
  * on top of the data stack, and set the operation mode to m + 1.
  */
+@ExecutionMode
+@ListConstructionMode
 public class BeginListCommand implements ICommand {
 
     private static final Pattern pattern = Pattern.compile("\\(");
@@ -22,11 +26,6 @@ public class BeginListCommand implements ICommand {
 
     @Override
     public void apply(IContext context, Character command) {
-        if (context.getOperationMode() < 0) {
-            // Execution mode is not enabled, no lists can be extended or created and added.
-            return;
-        }
-
         if (context.getOperationMode() == 0) {
             // Operation mode is 0. This means execution mode. Therefore we add a new list
             // to the data stack.
