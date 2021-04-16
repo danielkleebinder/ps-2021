@@ -20,6 +20,11 @@ public class ResetNotNumberCommand implements ICommand {
 
     @Override
     public void apply(IContext context, Character command) {
+        if (context.getOperationMode() > -1) {
+            // Nothing to do here since we are not in number construction
+            // mode anyways.
+            return;
+        }
         context.resetOperationMode();
     }
 }
