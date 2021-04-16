@@ -29,7 +29,7 @@ public class Interpreter {
     public IContext interpret(String commandInput) {
         Lexer lexer = new Lexer();
         ICommandStream commandStream = lexer.applyLexer(commandInput);
-        IContext context = new CalculatorContext(outputStream);
+        IContext context = new CalculatorContext(commandStream, outputStream);
 
         while (commandStream.hasNextCommand()) {
             final Character currentCommand = commandStream.remove();

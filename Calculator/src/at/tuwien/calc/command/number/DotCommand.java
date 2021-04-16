@@ -22,14 +22,16 @@ public class DotCommand implements ICommand {
 
     @Override
     public void apply(IContext context, Character command) {
-        if (context.getOperationMode() > -1) {
+        int opMode = context.getOperationMode();
+
+        if (opMode > 0) {
             // Not in number construction mode, we cannot do anything here.
             return;
         }
 
-        if (context.getOperationMode() < -1) {
-            // We are in decimal construction mode and find another '.'. This is,
-            // initiates the construction of a new number.
+        if (opMode == 0 || opMode < -1) {
+            // We are in decimal construction mode or in execution mode and
+            // find a '.'. This is, initiates the construction of a new number.
             context.pushToDataStack(new DoubleDataEntry(0.0));
         }
 

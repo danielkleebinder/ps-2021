@@ -1,20 +1,28 @@
 package at.tuwien.calc.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 /**
  * Represents a data entry holding a list of characters.
  */
-public class ListDataEntry implements IDataEntry<List<Character>> {
+public class ListDataEntry implements IDataEntry<String> {
 
-    private final List<Character> data = new ArrayList<>(8);
+    private final StringBuilder data = new StringBuilder(32);
+
+    /**
+     * Adds the given character to the end of the list.
+     *
+     * @param c Character to add.
+     */
+    public void add(Character c) {
+        data.append(c);
+    }
 
     @Override
-    public List<Character> get() {
-        return data;
+    public String get() {
+        return data.toString();
     }
 
     @Override
@@ -32,6 +40,8 @@ public class ListDataEntry implements IDataEntry<List<Character>> {
 
     @Override
     public String toString() {
-        return "List=" + data;
+        return "List=" + data.chars()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.toList());
     }
 }

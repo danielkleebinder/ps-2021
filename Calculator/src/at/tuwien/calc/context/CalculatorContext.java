@@ -1,6 +1,7 @@
 package at.tuwien.calc.context;
 
 import at.tuwien.calc.model.IDataEntry;
+import at.tuwien.calc.stream.ICommandStream;
 import at.tuwien.calc.stream.IOutputStream;
 
 import java.util.HashMap;
@@ -24,9 +25,11 @@ public class CalculatorContext implements IContext {
 
     private int operationMode = 0;
 
+    private ICommandStream commandStream;
     private IOutputStream outputStream;
 
-    public CalculatorContext(IOutputStream outputStream) {
+    public CalculatorContext(ICommandStream commandStream, IOutputStream outputStream) {
+        this.commandStream = commandStream;
         this.outputStream = outputStream;
     }
 
@@ -74,6 +77,11 @@ public class CalculatorContext implements IContext {
     @Override
     public <T extends IDataEntry<?>> T popFromDataStack() {
         return (T) dataStack.pop();
+    }
+
+    @Override
+    public ICommandStream getCommandStream() {
+        return commandStream;
     }
 
     @Override

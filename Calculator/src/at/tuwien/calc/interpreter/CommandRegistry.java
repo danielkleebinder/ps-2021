@@ -2,9 +2,7 @@ package at.tuwien.calc.interpreter;
 
 import at.tuwien.calc.command.ExitCommand;
 import at.tuwien.calc.command.ICommand;
-import at.tuwien.calc.command.list.BeginListCommand;
-import at.tuwien.calc.command.list.EndListCommand;
-import at.tuwien.calc.command.list.ListContentCommand;
+import at.tuwien.calc.command.list.*;
 import at.tuwien.calc.command.number.DecimalPlaceCommand;
 import at.tuwien.calc.command.number.DigitCommand;
 import at.tuwien.calc.command.number.DotCommand;
@@ -32,6 +30,8 @@ public class CommandRegistry {
             add(new BeginListCommand());
             add(new EndListCommand());
             add(new ListContentCommand());
+            add(new ApplyImmediatelyCommand());
+            add(new ApplyLaterCommand());
             add(new ExitCommand());
         }
     };

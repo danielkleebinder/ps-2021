@@ -34,6 +34,6 @@ public class ListContentCommand implements ICommand {
             return;
         }
 
-        ((ListDataEntry) dataEntry).get().add(command);
+        ((ListDataEntry) dataEntry).add(command);
     }
 }

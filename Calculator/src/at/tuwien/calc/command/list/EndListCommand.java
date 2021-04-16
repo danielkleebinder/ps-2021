@@ -2,7 +2,6 @@ package at.tuwien.calc.command.list;
 
 import at.tuwien.calc.command.ICommand;
 import at.tuwien.calc.context.IContext;
-import at.tuwien.calc.model.CharacterDataEntry;
 import at.tuwien.calc.model.ListDataEntry;
 
 import java.util.regex.Pattern;
@@ -31,7 +30,7 @@ public class EndListCommand implements ICommand {
             return;
         }
 
-        ((ListDataEntry) dataEntry).get().add(command);
+        ((ListDataEntry) dataEntry).add(command);
         int opMode = context.getOperationMode();
         context.setOperationMode(opMode - 1);
     }

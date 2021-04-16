@@ -1,7 +1,6 @@
 package at.tuwien.calc.stream;
 
 import java.util.ArrayDeque;
-import java.util.Queue;
 
 
 /**
@@ -9,11 +8,16 @@ import java.util.Queue;
  */
 public class QueueCommandStream implements ICommandStream {
 
-    private Queue<Character> commandQueue = new ArrayDeque<>(128);
+    private ArrayDeque<Character> commandQueue = new ArrayDeque<>(128);
 
     @Override
     public void add(String commands) {
-        commands.chars().forEach(c -> commandQueue.add((char) c));
+        commands.chars().forEach(c -> commandQueue.addLast((char) c));
+    }
+
+    @Override
+    public void unshift(String commands) {
+        commands.chars().forEach(c -> commandQueue.addFirst((char) c));
     }
 
     @Override

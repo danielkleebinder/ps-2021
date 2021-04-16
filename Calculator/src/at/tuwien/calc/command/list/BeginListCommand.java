@@ -40,7 +40,7 @@ public class BeginListCommand implements ICommand {
                 // add new list content.
                 return;
             }
-            ((ListDataEntry) dataEntry).get().add(command);
+            ((ListDataEntry) dataEntry).add(command);
         }
 
         // Increase operation mode by 1:

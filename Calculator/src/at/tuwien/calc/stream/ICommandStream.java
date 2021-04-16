@@ -25,6 +25,23 @@ public interface ICommandStream {
     void add(String commands);
 
     /**
+     * Adds a single character command to the stream. The command is always
+     * added to the beginning of the stream.
+     *
+     * @param command Command.
+     */
+    default void unshift(Character command) {
+        unshift(String.valueOf(command));
+    }
+
+    /**
+     * Adds the given commands to the beginning of the stream.
+     *
+     * @param commands Commands.
+     */
+    void unshift(String commands);
+
+    /**
      * Checks if there is still another command in the stream. If so, it returns
      * true, otherwise false.
      *

@@ -1,6 +1,7 @@
 package at.tuwien.calc.context;
 
 import at.tuwien.calc.model.IDataEntry;
+import at.tuwien.calc.stream.ICommandStream;
 
 
 /**
@@ -83,6 +84,14 @@ public interface IContext {
      * @return Data entry.
      */
     <T extends IDataEntry<?>> T popFromDataStack();
+
+    /**
+     * Returns the currently active command stream for this context. Use this to push and
+     * pop new command if available.
+     *
+     * @return Command stream.
+     */
+    ICommandStream getCommandStream();
 
     /**
      * Writes the given string to the output stream.
