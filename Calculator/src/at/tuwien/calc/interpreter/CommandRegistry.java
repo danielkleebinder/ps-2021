@@ -19,6 +19,7 @@ public class CommandRegistry {
         {
             add(new DigitCommand());
             add(new DotCommand());
+            add(new DecimalPlaceCommand());
             add(new ExitCommand());
         }
     };
