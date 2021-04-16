@@ -32,6 +32,6 @@ public class ListDataEntry implements IDataEntry<List<Character>> {
 
     @Override
     public String toString() {
-        return "" + data;
+        return "List=" + data;
     }
 }

@@ -22,19 +22,32 @@ public class BeginListCommand implements ICommand {
 
     @Override
     public void apply(IContext context, Character command) {
-        if (context.getOperationMode() <= 0) {
-            // List construction mode has to be enabled (i.e. opMode > 0).
+        if (context.getOperationMode() < 0) {
+            // Execution mode is not enabled, no lists can be extended or created and added.
             return;
         }
 
-        var dataEntry = context.peekDataStack();
-        if (!(dataEntry instanceof ListDataEntry)) {
-            // The top entry on the data stack has to be a list entry, otherwise we cannot
-            // add new list content.
-            return;
+        if (context.getOperationMode() == 0) {
+            // Operation mode is 0. This means execution mode. Therefore we add a new list
+            // to the data stack.
+            context.pushToDataStack(new ListDataEntry());
         }
 
-        ((ListDataEntry) dataEntry).get().add(command);
+        if (context.getOperationMode() > 0) {
+            var dataEntry = context.peekDataStack();
+            if (!(dataEntry instanceof ListDataEntry)) {
+                // The top entry on the data stack has to be a list entry, otherwise we cannot
+                // add new list content.
+                return;
+            }
+            ((ListDataEntry) dataEntry).get().add(command);
+        }
+
+        // Increase operation mode by 1:
+        //   - if the operation mode was 0 (i.e. execution mode), we will enter
+        //     list construction mode
+        //   - if the operation mode was >0 (i.e. list construction mode), we
+        //     will increase the number of parentheses
         int opMode = context.getOperationMode();
         context.setOperationMode(opMode + 1);
     }
