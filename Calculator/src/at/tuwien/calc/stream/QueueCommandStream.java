@@ -17,7 +17,10 @@ public class QueueCommandStream implements ICommandStream {
 
     @Override
     public void unshift(String commands) {
-        commands.chars().forEach(c -> commandQueue.addFirst((char) c));
+        new StringBuilder(commands)
+                .reverse()
+                .chars()
+                .forEach(c -> commandQueue.addFirst((char) c));
     }
 
     @Override
