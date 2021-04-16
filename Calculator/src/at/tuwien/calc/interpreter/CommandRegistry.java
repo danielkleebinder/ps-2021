@@ -1,9 +1,6 @@
 package at.tuwien.calc.interpreter;
 
-import at.tuwien.calc.command.DigitCommand;
-import at.tuwien.calc.command.DotCommand;
-import at.tuwien.calc.command.ExitCommand;
-import at.tuwien.calc.command.ICommand;
+import at.tuwien.calc.command.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +23,8 @@ public class CommandRegistry {
         }
     };
 
+    private ICommand invalidCharacterCommand = new ResetCommand();
+
     /**
      * Returns a list of commands which match the given character.
      *
@@ -37,5 +36,14 @@ public class CommandRegistry {
         return commandInterpreters.stream()
                 .filter(command -> command.getCommandPattern().matcher(commandAsString).matches())
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns the command which should be run if the input character was invalid.
+     *
+     * @return Invalid character command.
+     */
+    public ICommand getInvalidCharacterCommand() {
+        return invalidCharacterCommand;
     }
 }
