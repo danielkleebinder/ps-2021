@@ -1,6 +1,8 @@
 package at.tuwien.calc.command.number;
 
 import at.tuwien.calc.command.ICommand;
+import at.tuwien.calc.command.annotation.ExecutionMode;
+import at.tuwien.calc.command.annotation.IntegerConstructionMode;
 import at.tuwien.calc.context.IContext;
 import at.tuwien.calc.model.DoubleDataEntry;
 
@@ -13,6 +15,8 @@ import java.util.regex.Pattern;
  * the value of the input character (0 to 9) as a whole floating-point number
  * onto the data stack, and the operation mode becomes −1.
  */
+@ExecutionMode
+@IntegerConstructionMode
 public class DigitCommand implements ICommand {
 
     private static final Pattern pattern = Pattern.compile("\\d");

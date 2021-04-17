@@ -1,6 +1,7 @@
 package at.tuwien.calc.command.list;
 
 import at.tuwien.calc.command.ICommand;
+import at.tuwien.calc.command.annotation.ExecutionMode;
 import at.tuwien.calc.context.IContext;
 import at.tuwien.calc.model.ListDataEntry;
 
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
  * list contents at the begin of the command stream to be executed next. There is
  * no effect if the top entry is a number.
  */
+@ExecutionMode
 public class ApplyImmediatelyCommand implements ICommand {
 
     private static final Pattern pattern = Pattern.compile("@");
@@ -23,11 +25,6 @@ public class ApplyImmediatelyCommand implements ICommand {
 
     @Override
     public void apply(IContext context, Character command) {
-        if (context.getOperationMode() != 0) {
-            // Only available in execution mode
-            return;
-        }
-
         if (!(context.peekDataStack() instanceof ListDataEntry)) {
             // The top entry on the data stack has to be a list entry to read
             // commands from and add them to the command stream.
