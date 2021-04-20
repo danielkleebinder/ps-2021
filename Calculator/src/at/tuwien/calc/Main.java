@@ -1,24 +1,20 @@
 package at.tuwien.calc;
 
-import at.tuwien.calc.interpreter.Interpreter;
 import at.tuwien.calc.stream.ConsoleOutputStream;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.logging.Logger;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        Interpreter interpreter = new Interpreter(new ConsoleOutputStream());
-        BufferedReader inputStream = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) {
+        Logger logger = Logger.getLogger(Main.class.getName());
 
-        System.out.println("Write # and press ENTER to exit the calculator:");
-        System.out.print("> ");
-        String line;
-        while ((line = inputStream.readLine()) != null) {
-            var result = interpreter.interpret(line);
-            System.out.println(result);
-            System.out.print("> ");
+        Calculator calculator = new Calculator(System.in, new ConsoleOutputStream());
+
+        try {
+            calculator.boot();
+        } catch (IOException e) {
+            logger.severe(e.getMessage());
         }
     }
 }

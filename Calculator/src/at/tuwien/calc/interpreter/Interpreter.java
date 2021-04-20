@@ -16,12 +16,7 @@ import at.tuwien.calc.stream.IOutputStream;
  */
 public class Interpreter {
 
-    private CommandRegistry commandRegistry = new CommandRegistry();
-    private IOutputStream outputStream;
-
-    public Interpreter(IOutputStream outputStream) {
-        this.outputStream = outputStream;
-    }
+    private final CommandRegistry commandRegistry = new CommandRegistry();
 
     /**
      * Interprets the given command input. Generates a new execution environment (i.e. context) for
@@ -30,10 +25,9 @@ public class Interpreter {
      * @param commandInput List of commands.
      * @return Parsed context.
      */
-    public IContext interpret(String commandInput) {
+    public IContext interpret(String commandInput, IContext context) {
         Lexer lexer = new Lexer();
         ICommandStream commandStream = lexer.applyLexer(commandInput);
-        IContext context = new CalculatorContext(commandStream, outputStream);
 
         while (commandStream.hasNextCommand()) {
             final Character currentCommand = commandStream.remove();
