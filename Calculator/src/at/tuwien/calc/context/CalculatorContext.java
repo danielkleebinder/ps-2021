@@ -4,9 +4,7 @@ import at.tuwien.calc.model.IDataEntry;
 import at.tuwien.calc.stream.ICommandStream;
 import at.tuwien.calc.stream.IOutputStream;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 
 /**
@@ -21,12 +19,13 @@ public class CalculatorContext implements IContext {
      * in naive implementations.
      */
     private final Map<Character, IDataEntry<?>> register = new HashMap<>(41);
-    private final Stack<IDataEntry<?>> dataStack = new Stack<>();
+    private final Deque<IDataEntry<?>> dataStack = new ArrayDeque<>();
 
     private int operationMode = 0;
 
-    private ICommandStream commandStream;
-    private IOutputStream outputStream;
+    // TODO: Is this command stream really necessary? Maybe same as from the lexer?
+    private final ICommandStream commandStream;
+    private final IOutputStream outputStream;
 
     public CalculatorContext(ICommandStream commandStream, IOutputStream outputStream) {
         this.commandStream = commandStream;
@@ -71,7 +70,7 @@ public class CalculatorContext implements IContext {
 
     @Override
     public <T extends IDataEntry<?>> T peekDataStack() {
-        if (dataStack.empty()) {
+        if (dataStack.isEmpty()) {
             return null;
         }
         return (T) dataStack.peek();
