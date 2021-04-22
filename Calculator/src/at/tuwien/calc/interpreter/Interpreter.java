@@ -34,11 +34,20 @@ public class Interpreter {
             commandRegistry
                     .getCommandsFor(currentCommand)
                     .stream()
-                    .filter(interpreter -> (interpreter.getClass().getAnnotations().length <= 0) ||
-                            (interpreter.getClass().isAnnotationPresent(ExecutionMode.class) && context.getOperationMode() == 0) ||
-                            (interpreter.getClass().isAnnotationPresent(IntegerConstructionMode.class) && context.getOperationMode() == -1) ||
-                            (interpreter.getClass().isAnnotationPresent(DecimalConstructionMode.class) && context.getOperationMode() < -1) ||
-                            (interpreter.getClass().isAnnotationPresent(ListConstructionMode.class) && context.getOperationMode() > 0))
+                    .filter(interpreter -> {
+                        var execMode = interpreter.getClass().isAnnotationPresent(ExecutionMode.class);
+                        var intMode = interpreter.getClass().isAnnotationPresent(IntegerConstructionMode.class);
+                        var decMode = interpreter.getClass().isAnnotationPresent(DecimalConstructionMode.class);
+                        var listMode = interpreter.getClass().isAnnotationPresent(ListConstructionMode.class);
+
+                        if (!execMode && !intMode && !decMode && !listMode) {
+                            return true;
+                        }
+                        return (execMode && context.getOperationMode() == 0) ||
+                                (intMode && context.getOperationMode() == -1) ||
+                                (decMode && context.getOperationMode() < -1) ||
+                                (listMode && context.getOperationMode() > 0);
+                    })
                     .forEach(commandInterpreter -> commandInterpreter.apply(context, currentCommand));
         }
 

@@ -26,7 +26,7 @@ public class Calculator {
     }
 
     public void boot() throws IOException {
-        outputStream.writeLine("Write # and press ENTER to exit the calculator:");
+        outputStream.writeLine("Write ; and press ENTER to exit the calculator:");
         outputStream.write("> ");
         String line;
         while ((line = inputStream.readLine()) != null) {

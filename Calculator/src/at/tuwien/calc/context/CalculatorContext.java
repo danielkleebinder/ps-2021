@@ -82,6 +82,21 @@ public class CalculatorContext implements IContext {
     }
 
     @Override
+    public void removeDataStackValueAt(int index) {
+        dataStack.remove(getDataStackSize() - index - 1);
+    }
+
+    @Override
+    public <T extends IDataEntry<?>> T getDataStackValueAt(int index) {
+        return (T) dataStack.get(index);
+    }
+
+    @Override
+    public int getDataStackSize() {
+        return dataStack.size();
+    }
+
+    @Override
     public ICommandStream getCommandStream() {
         return commandStream;
     }
