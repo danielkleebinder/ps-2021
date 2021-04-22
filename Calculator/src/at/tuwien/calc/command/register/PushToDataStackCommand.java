@@ -24,6 +24,10 @@ public class PushToDataStackCommand implements ICommand {
     @Override
     public void apply(IContext context, Character command) {
         var registerContent = context.getRegisterValue(command);
+        if (registerContent == null) {
+            // We do not want to push null values onto the data stack
+            return;
+        }
         context.pushToDataStack(registerContent);
     }
 }
