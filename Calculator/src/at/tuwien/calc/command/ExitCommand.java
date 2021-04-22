@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  */
 public class ExitCommand implements ICommand {
 
-    private static final Pattern pattern = Pattern.compile("#");
+    private static final Pattern pattern = Pattern.compile(";");
 
     @Override
     public Pattern getCommandPattern() {

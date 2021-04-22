@@ -12,7 +12,7 @@ public class Main {
         Interpreter interpreter = new Interpreter(new ConsoleOutputStream());
         BufferedReader inputStream = new BufferedReader(new InputStreamReader(System.in));
 
-        System.out.println("Write # and press ENTER to exit the calculator:");
+        System.out.println("Write ; and press ENTER to exit the calculator:");
         System.out.print("> ");
         String line;
         while ((line = inputStream.readLine()) != null) {
