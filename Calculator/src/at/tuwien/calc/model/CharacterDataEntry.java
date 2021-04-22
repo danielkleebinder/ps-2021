@@ -16,7 +16,12 @@ public class CharacterDataEntry implements IDataEntry<Character> {
 
     @Override
     public Character get() {
-        return null;
+        return data;
+    }
+
+    @Override
+    public IDataEntry<Character> copy() {
+        return new CharacterDataEntry(data);
     }
 
     @Override

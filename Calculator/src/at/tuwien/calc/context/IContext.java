@@ -85,6 +85,32 @@ public interface IContext {
      */
     <T extends IDataEntry<?>> T popFromDataStack();
 
+
+    /**
+     * Removes the value at the n'th position on the data stack. The index n
+     * is counted FROM THE TOP of the stack, not as usual, from the bottom.
+     *
+     * @param index Data stack index counting from the top.
+     */
+    void removeDataStackValueAt(int index);
+
+    /**
+     * Returns the value of the data stack at the given index.
+     *
+     * @param index Data stack index.
+     * @param <T>   Data entry type.
+     * @return Data entry.
+     */
+    <T extends IDataEntry<?>> T getDataStackValueAt(int index);
+
+    /**
+     * Returns the current size of the data stack.
+     *
+     * @return Data stack size.
+     */
+    int getDataStackSize();
+
+
     /**
      * Returns the currently active command stream for this context. Use this to push and
      * pop new command if available.

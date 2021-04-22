@@ -20,6 +20,11 @@ public class DoubleDataEntry implements IDataEntry<Double> {
     }
 
     @Override
+    public IDataEntry<Double> copy() {
+        return new DoubleDataEntry(data);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

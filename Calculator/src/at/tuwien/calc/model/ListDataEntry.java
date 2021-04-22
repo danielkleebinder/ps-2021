@@ -11,6 +11,14 @@ public class ListDataEntry implements IDataEntry<String> {
 
     private final StringBuilder data = new StringBuilder(32);
 
+    public ListDataEntry() {
+    }
+
+    public ListDataEntry(String data) {
+        this.data.setLength(0);
+        this.data.append(data);
+    }
+
     /**
      * Adds the given character to the end of the list.
      *
@@ -23,6 +31,11 @@ public class ListDataEntry implements IDataEntry<String> {
     @Override
     public String get() {
         return data.toString();
+    }
+
+    @Override
+    public IDataEntry<String> copy() {
+        return new ListDataEntry(data.toString());
     }
 
     @Override

@@ -7,6 +7,8 @@ import at.tuwien.calc.command.number.DecimalPlaceCommand;
 import at.tuwien.calc.command.number.DigitCommand;
 import at.tuwien.calc.command.number.DotCommand;
 import at.tuwien.calc.command.number.ResetNotNumberCommand;
+import at.tuwien.calc.command.operator.*;
+import at.tuwien.calc.command.register.PushToDataStackCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,12 @@ public class CommandRegistry {
             add(new ListContentCommand());
             add(new ApplyImmediatelyCommand());
             add(new ApplyLaterCommand());
+            add(new CopyCommand());
+            add(new DataStackSizeCommand());
+            add(new DeleteCommand());
+            add(new SquareRootCommand());
+            add(new WriteOutputCommand());
+            add(new PushToDataStackCommand());
             add(new ExitCommand());
         }
     };
