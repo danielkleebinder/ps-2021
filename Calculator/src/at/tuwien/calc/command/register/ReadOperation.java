@@ -6,6 +6,10 @@ import at.tuwien.calc.context.IContext;
 
 import java.util.regex.Pattern;
 
+/**
+ * Lowercase letter ’a’ to ’z’ pushes the contents of the corresponding
+ * data register a to z onto the data stack.
+ */
 @ExecutionMode
 public class ReadOperation implements ICommand {
     private static final Pattern pattern = Pattern.compile("[a-z]");
@@ -17,7 +21,11 @@ public class ReadOperation implements ICommand {
 
     @Override
     public void apply(IContext context, Character command) {
-        var value = context.getRegisterValue(command);
-        context.pushToDataStack(value);
+        var registerContent = context.getRegisterValue(command);
+        if (registerContent == null) {
+            // We do not want to push null values onto the data stack
+            return;
+        }
+        context.pushToDataStack(registerContent);
     }
 }

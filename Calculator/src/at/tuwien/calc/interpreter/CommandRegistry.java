@@ -8,7 +8,6 @@ import at.tuwien.calc.command.number.DigitCommand;
 import at.tuwien.calc.command.number.DotCommand;
 import at.tuwien.calc.command.number.ResetNotNumberCommand;
 import at.tuwien.calc.command.operator.*;
-import at.tuwien.calc.command.register.PushToDataStackCommand;
 import at.tuwien.calc.command.operations.arithmetic.MinusOperation;
 import at.tuwien.calc.command.operations.arithmetic.PlusOperation;
 import at.tuwien.calc.command.register.ReadOperation;
@@ -43,7 +42,6 @@ public class CommandRegistry {
             add(new DeleteCommand());
             add(new SquareRootCommand());
             add(new WriteOutputCommand());
-            add(new PushToDataStackCommand());
             add(new ExitCommand());
             add(new PlusOperation());
             add(new MinusOperation());
