@@ -7,6 +7,9 @@ import at.tuwien.calc.command.number.DecimalPlaceCommand;
 import at.tuwien.calc.command.number.DigitCommand;
 import at.tuwien.calc.command.number.DotCommand;
 import at.tuwien.calc.command.number.ResetNotNumberCommand;
+import at.tuwien.calc.command.operations.logical.EqualsOperation;
+import at.tuwien.calc.command.operations.logical.LessThanOperation;
+import at.tuwien.calc.command.operations.logical.MoreThanOperation;
 import at.tuwien.calc.command.operator.*;
 import at.tuwien.calc.command.operations.arithmetic.MinusOperation;
 import at.tuwien.calc.command.operations.arithmetic.PlusOperation;
@@ -47,6 +50,9 @@ public class CommandRegistry {
             add(new MinusOperation());
             add(new StoreOperation());
             add(new ReadOperation());
+            add(new EqualsOperation());
+            add(new LessThanOperation());
+            add(new MoreThanOperation());
         }
     };
 
