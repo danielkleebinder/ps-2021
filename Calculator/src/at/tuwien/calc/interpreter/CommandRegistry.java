@@ -9,10 +9,7 @@ import at.tuwien.calc.command.number.DotCommand;
 import at.tuwien.calc.command.number.ResetNotNumberCommand;
 import at.tuwien.calc.command.operations.arithmetic.DivisonOperation;
 import at.tuwien.calc.command.operations.arithmetic.MultiplicationOperation;
-import at.tuwien.calc.command.operations.logical.CheckOperation;
-import at.tuwien.calc.command.operations.logical.EqualsOperation;
-import at.tuwien.calc.command.operations.logical.LessThanOperation;
-import at.tuwien.calc.command.operations.logical.MoreThanOperation;
+import at.tuwien.calc.command.operations.logical.*;
 import at.tuwien.calc.command.operator.*;
 import at.tuwien.calc.command.operations.arithmetic.MinusOperation;
 import at.tuwien.calc.command.operations.arithmetic.PlusOperation;
@@ -59,6 +56,7 @@ public class CommandRegistry {
             add(new CheckOperation());
             add(new DivisonOperation());
             add(new MultiplicationOperation());
+            add(new NegationOperation());
         }
     };
 
