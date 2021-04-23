@@ -19,7 +19,7 @@ public class CalculatorContext implements IContext {
      * in naive implementations.
      */
     private final Map<Character, IDataEntry<?>> register = new HashMap<>(41);
-    private final Deque<IDataEntry<?>> dataStack = new ArrayDeque<>();
+    private final Stack<IDataEntry<?>> dataStack = new Stack<>();
 
     private int operationMode = 0;
 
