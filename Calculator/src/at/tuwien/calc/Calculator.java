@@ -4,6 +4,7 @@ import at.tuwien.calc.context.CalculatorContext;
 import at.tuwien.calc.context.IContext;
 import at.tuwien.calc.interpreter.Interpreter;
 import at.tuwien.calc.interpreter.InterpreterException;
+import at.tuwien.calc.model.IDataEntry;
 import at.tuwien.calc.stream.IOutputStream;
 import at.tuwien.calc.stream.QueueCommandStream;
 
@@ -41,5 +42,9 @@ public class Calculator {
             outputStream.writeLine(result.toString());
             outputStream.write("> ");
         }
+    }
+
+    public void flashRegister(Character register, IDataEntry<?> value) {
+        this.context.setRegisterValue(register, value);
     }
 }
