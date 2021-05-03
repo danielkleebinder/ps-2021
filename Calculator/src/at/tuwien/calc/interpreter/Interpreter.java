@@ -1,5 +1,6 @@
 package at.tuwien.calc.interpreter;
 
+import at.tuwien.calc.command.ICommand;
 import at.tuwien.calc.command.annotation.DecimalConstructionMode;
 import at.tuwien.calc.command.annotation.ExecutionMode;
 import at.tuwien.calc.command.annotation.IntegerConstructionMode;
@@ -8,6 +9,9 @@ import at.tuwien.calc.context.CalculatorContext;
 import at.tuwien.calc.context.IContext;
 import at.tuwien.calc.stream.ICommandStream;
 import at.tuwien.calc.stream.IOutputStream;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -25,13 +29,13 @@ public class Interpreter {
      * @param commandInput List of commands.
      * @return Parsed context.
      */
-    public IContext interpret(String commandInput, IContext context) {
+    public IContext interpret(String commandInput, IContext context) throws InterpreterException {
         Lexer lexer = new Lexer();
         ICommandStream commandStream = lexer.applyLexer(commandInput);
 
         while (commandStream.hasNextCommand()) {
             final Character currentCommand = commandStream.remove();
-            commandRegistry
+            List<ICommand> commands = commandRegistry
                     .getCommandsFor(currentCommand)
                     .stream()
                     .filter(interpreter -> {
@@ -48,7 +52,17 @@ public class Interpreter {
                                 (decMode && context.getOperationMode() < -1) ||
                                 (listMode && context.getOperationMode() > 0);
                     })
-                    .forEach(commandInterpreter -> commandInterpreter.apply(context, currentCommand));
+                    .collect(Collectors.toList());
+
+            if (commands.isEmpty()) {
+                throw new InterpreterException("No matching commands found.");
+            }
+
+            if (commands.size() > 1) {
+                throw new InterpreterException("Too many matching commands found.");
+            }
+
+            commands.get(0).apply(context, currentCommand);
         }
 
         return context;

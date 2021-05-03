@@ -1,7 +1,9 @@
 package at.tuwien.calc;
 
 import at.tuwien.calc.context.CalculatorContext;
+import at.tuwien.calc.context.IContext;
 import at.tuwien.calc.interpreter.Interpreter;
+import at.tuwien.calc.interpreter.InterpreterException;
 import at.tuwien.calc.stream.IOutputStream;
 import at.tuwien.calc.stream.QueueCommandStream;
 
@@ -30,7 +32,12 @@ public class Calculator {
         outputStream.write("> ");
         String line;
         while ((line = inputStream.readLine()) != null) {
-            var result = interpreter.interpret(line, context);
+            IContext result = null;
+            try {
+                result = interpreter.interpret(line, context);
+            } catch (InterpreterException e) {
+                outputStream.writeLine("Failed to interpret command: " + e.getMessage());
+            }
             outputStream.writeLine(result.toString());
             outputStream.write("> ");
         }
