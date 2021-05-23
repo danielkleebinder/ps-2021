@@ -1,7 +1,6 @@
 package at.tuwien.calc;
 
 import at.tuwien.calc.context.CalculatorContext;
-import at.tuwien.calc.context.IContext;
 import at.tuwien.calc.interpreter.Interpreter;
 import at.tuwien.calc.interpreter.InterpreterException;
 import at.tuwien.calc.model.IDataEntry;
@@ -33,13 +32,12 @@ public class Calculator {
         outputStream.write("> ");
         String line;
         while ((line = inputStream.readLine()) != null) {
-            IContext result = null;
             try {
-                result = interpreter.interpret(line, context);
+                interpreter.interpret(line, context);
             } catch (InterpreterException e) {
                 outputStream.writeLine("Failed to interpret command: " + e.getMessage());
             }
-            outputStream.writeLine(result.toString());
+            outputStream.writeLine(context.toString());
             outputStream.write("> ");
         }
     }

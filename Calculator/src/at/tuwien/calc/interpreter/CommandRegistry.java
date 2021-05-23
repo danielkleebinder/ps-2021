@@ -57,6 +57,7 @@ public class CommandRegistry {
             add(new MultiplicationOperation());
             add(new NegationOperation());
             add(new RoundingOperation());
+            add(new ReadInputCommand());
         }
     };
 
