@@ -24,7 +24,9 @@ public class Calculator {
         this.interpreter = new Interpreter();
         this.outputStream = outputStream;
         this.inputStream = new BufferedReader(new InputStreamReader(inputStream));
-        context = new CalculatorContext(new QueueCommandStream(), outputStream);
+        this.context = new CalculatorContext(new QueueCommandStream(), outputStream);
+
+        this.interpreter.setExtensiveLogging(false);
     }
 
     public void boot() throws IOException {

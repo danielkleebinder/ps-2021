@@ -22,6 +22,8 @@ public class Interpreter {
 
     private final CommandRegistry commandRegistry = new CommandRegistry();
 
+    private boolean extensiveLogging = false;
+
     /**
      * Interprets the given command input. Generates a new execution environment (i.e. context) for
      * every invocation of this method.
@@ -76,7 +78,10 @@ public class Interpreter {
             if (!commands.isEmpty()) {
                 commands.forEach(c -> c.apply(context, currentCommand));
             }
-            System.out.println("For Command: " + currentCommand + " - result: " + context);
+
+            if (extensiveLogging) {
+                System.out.println("For Command: " + currentCommand + " - Result: " + context);
+            }
         }
 
         return context;
@@ -125,5 +130,13 @@ public class Interpreter {
             throw new InterpreterException("Read input is neither a number nor a list", ex);
         }
         return context;
+    }
+
+    public boolean isExtensiveLogging() {
+        return extensiveLogging;
+    }
+
+    public void setExtensiveLogging(boolean extensiveLogging) {
+        this.extensiveLogging = extensiveLogging;
     }
 }
