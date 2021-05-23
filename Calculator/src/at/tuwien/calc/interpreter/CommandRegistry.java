@@ -50,6 +50,8 @@ public class CommandRegistry {
             add(new EqualsOperation());
             add(new LessThanOperation());
             add(new MoreThanOperation());
+            add(new AndOperation());
+            add(new OrOperation());
             add(new CheckOperation());
             add(new DivisonOperation());
             add(new MultiplicationOperation());
