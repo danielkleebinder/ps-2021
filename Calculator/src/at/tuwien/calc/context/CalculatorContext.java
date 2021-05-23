@@ -4,7 +4,9 @@ import at.tuwien.calc.model.IDataEntry;
 import at.tuwien.calc.stream.ICommandStream;
 import at.tuwien.calc.stream.IOutputStream;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 
 
 /**
@@ -83,7 +85,7 @@ public class CalculatorContext implements IContext {
 
     @Override
     public void removeDataStackValueAt(int index) {
-        dataStack.remove(getDataStackSize() - index - 1);
+        dataStack.remove(index);
     }
 
     @Override

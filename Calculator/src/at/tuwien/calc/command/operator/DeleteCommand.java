@@ -34,14 +34,16 @@ public class DeleteCommand implements ICommand {
             return;
         }
 
+        var stackSize = context.getDataStackSize();
         var v = (Double) entry.get();
         var n = (int) Math.round(v);
-        if (n < 0 || n >= context.getDataStackSize()) {
+        if (n < 0 || n >= stackSize + 1) {
             // Pops only v from the data stack if v is not a number or n is
             // not in the appropriate range.
             return;
         }
 
-        context.removeDataStackValueAt(n);
+        System.out.println(stackSize - n);
+        context.removeDataStackValueAt(stackSize - n);
     }
 }

@@ -24,6 +24,18 @@ public interface IContext {
      */
     void setOperationMode(int operationMode);
 
+    default void switchToExecutionMode() {
+        setOperationMode(0);
+    }
+
+    default void switchToNumberConstructionMode() {
+        setOperationMode(-1);
+    }
+
+    default void switchToListConstructionMode() {
+        setOperationMode(1);
+    }
+
     /**
      * Returns the currently used operation mode.
      *
@@ -31,6 +43,10 @@ public interface IContext {
      * @see IContext#setOperationMode(int)
      */
     int getOperationMode();
+
+    default boolean isExecutionMode() {
+        return getOperationMode() == 0;
+    }
 
     /**
      * Resets to the default operation mode (typically 0).

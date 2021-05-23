@@ -37,7 +37,7 @@ public class DigitCommand implements ICommand {
         }
 
         if (context.getOperationMode() == 0) {
-            context.setOperationMode(-1);
+            context.switchToNumberConstructionMode();
             context.pushToDataStack(new DoubleDataEntry(digit));
         }
     }

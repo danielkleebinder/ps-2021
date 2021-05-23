@@ -40,8 +40,14 @@ public class Interpreter {
         Lexer lexer = new Lexer();
         ICommandStream commandStream = lexer.applyLexer(commandInput);
 
+        // Copy the lexer result into the context command stream
         while (commandStream.hasNextCommand()) {
-            final Character currentCommand = commandStream.remove();
+            context.getCommandStream().add(commandStream.remove());
+        }
+
+        // Use and evaluate the context command stream
+        while (context.getCommandStream().hasNextCommand()) {
+            final Character currentCommand = context.getCommandStream().remove();
             List<ICommand> commands = commandRegistry
                     .getCommandsFor(currentCommand)
                     .stream()
@@ -68,9 +74,9 @@ public class Interpreter {
             // I don't think that we should throw an exception here. This causes problems with
             // whitespaces or other characters that do not match.
             if (!commands.isEmpty()) {
-                // throw new InterpreterException("No matching commands found.");
-                commands.get(0).apply(context, currentCommand);
+                commands.forEach(c -> c.apply(context, currentCommand));
             }
+            System.out.println("For Command: " + currentCommand + " - result: " + context);
         }
 
         return context;
