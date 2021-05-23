@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 @ExecutionMode
 public class StoreOperation implements ICommand {
 
-    private static final Pattern pattern = Pattern.compile("[A-Z]");
+    private static final Pattern pattern = Pattern.compile("[a-z]");
 
     @Override
     public Pattern getCommandPattern() {

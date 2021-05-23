@@ -43,7 +43,6 @@ public class DeleteCommand implements ICommand {
             return;
         }
 
-        System.out.println(stackSize - n);
         context.removeDataStackValueAt(stackSize - n);
     }
 }
