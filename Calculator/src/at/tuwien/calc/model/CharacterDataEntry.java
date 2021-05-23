@@ -25,6 +25,14 @@ public class CharacterDataEntry implements IDataEntry<Character> {
     }
 
     @Override
+    public int compareTo(IDataEntry o) {
+        if (o instanceof CharacterDataEntry) {
+            return get().compareTo(((CharacterDataEntry) o).get());
+        }
+        return 0;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

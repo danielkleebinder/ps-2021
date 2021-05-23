@@ -4,6 +4,7 @@ import at.tuwien.calc.command.ICommand;
 import at.tuwien.calc.command.annotation.ExecutionMode;
 import at.tuwien.calc.context.IContext;
 import at.tuwien.calc.model.DoubleDataEntry;
+import at.tuwien.calc.model.ListDataEntry;
 
 import java.util.regex.Pattern;
 
@@ -20,16 +21,26 @@ public class LessThanOperation implements ICommand {
     @Override
     public void apply(IContext context, Character command) {
         if (context.getDataStackSize() < 2) {
-            // TODO: Error Handling
             return;
         }
-        var value2 = context.<DoubleDataEntry>popFromDataStack().get();
-        var value1 = context.<DoubleDataEntry>popFromDataStack().get();
+        var value2 = context.popFromDataStack();
+        var value1 = context.popFromDataStack();
 
-        if (value1 < value2 * epsilon) {
-            context.pushToDataStack(new DoubleDataEntry(0));
-        } else {
+        // Compare different types
+        if (value1.getClass() != value2.getClass()) {
+            if (value1 instanceof ListDataEntry) {
+                context.pushToDataStack(new DoubleDataEntry(0));
+            } else {
+                context.pushToDataStack(new DoubleDataEntry(1));
+            }
+            return;
+        }
+
+        // Compare same types
+        if (value1.compareTo(value2) < 0) {
             context.pushToDataStack(new DoubleDataEntry(1));
+        } else {
+            context.pushToDataStack(new DoubleDataEntry(0));
         }
     }
 }

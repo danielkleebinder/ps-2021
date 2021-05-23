@@ -5,10 +5,8 @@ import at.tuwien.calc.command.annotation.DecimalConstructionMode;
 import at.tuwien.calc.command.annotation.ExecutionMode;
 import at.tuwien.calc.command.annotation.IntegerConstructionMode;
 import at.tuwien.calc.command.annotation.ListConstructionMode;
-import at.tuwien.calc.context.CalculatorContext;
 import at.tuwien.calc.context.IContext;
 import at.tuwien.calc.stream.ICommandStream;
-import at.tuwien.calc.stream.IOutputStream;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,15 +52,16 @@ public class Interpreter {
                     })
                     .collect(Collectors.toList());
 
-            if (commands.isEmpty()) {
-                throw new InterpreterException("No matching commands found.");
-            }
-
             if (commands.size() > 1) {
                 throw new InterpreterException("Too many matching commands found.");
             }
 
-            commands.get(0).apply(context, currentCommand);
+            // I don't think that we should throw an exception here. This causes problems with
+            // whitespaces or other characters that do not match.
+            if (!commands.isEmpty()) {
+                // throw new InterpreterException("No matching commands found.");
+                commands.get(0).apply(context, currentCommand);
+            }
         }
 
         return context;

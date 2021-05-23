@@ -26,6 +26,11 @@ public class OrOperation implements ICommand {
 
     @Override
     public void apply(IContext context, Character command) {
+        if (context.getDataStackSize() < 2) {
+            // Not enough items on the stack
+            return;
+        }
+
         IDataEntry term1 = context.popFromDataStack();
         IDataEntry term2 = context.popFromDataStack();
 

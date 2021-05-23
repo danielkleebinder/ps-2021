@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 @ExecutionMode
 public class DivisonOperation implements ICommand {
 
-    private static final Pattern pattern = Pattern.compile("\\\\");
+    private static final Pattern pattern = Pattern.compile("/");
     private static final float epsilon = 0.05f;
 
     @Override

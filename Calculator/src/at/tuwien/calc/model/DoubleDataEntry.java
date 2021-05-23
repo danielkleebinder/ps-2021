@@ -8,6 +8,7 @@ import java.util.Objects;
  */
 public class DoubleDataEntry implements IDataEntry<Double> {
 
+    private final double EPSILON = 0.0005;
     private double data;
 
     public DoubleDataEntry(double data) {
@@ -22,6 +23,18 @@ public class DoubleDataEntry implements IDataEntry<Double> {
     @Override
     public IDataEntry<Double> copy() {
         return new DoubleDataEntry(data);
+    }
+
+    @Override
+    public int compareTo(IDataEntry o) {
+        if (!(o instanceof DoubleDataEntry)) {
+            return 0;
+        }
+        var comp = get() - ((DoubleDataEntry) o).get();
+        if (comp <= EPSILON && comp >= -EPSILON) {
+            return 0;
+        }
+        return comp > 0 ? 1 : -1;
     }
 
     @Override

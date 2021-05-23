@@ -19,21 +19,24 @@ public class EqualsOperation implements ICommand {
     }
 
     @Override
-    public void apply(IContext context, Character command){
+    public void apply(IContext context, Character command) {
         if (context.getDataStackSize() < 2) {
-            // TODO: Error Handling
             return;
         }
-        var value1 = context.<DoubleDataEntry>popFromDataStack().get();
-        var value2 = context.<DoubleDataEntry>popFromDataStack().get();
-        var diff = value1 - value2;
+        var value2 = context.popFromDataStack();
+        var value1 = context.popFromDataStack();
 
-        //TODO: Each number in epsilon should be false (0) makes no sense?
-        // Multiplication also not necessary for equals?
-        if (diff >= -epsilon && diff <= epsilon) {
+        // Compare different types
+        if (value1.getClass() != value2.getClass()) {
             context.pushToDataStack(new DoubleDataEntry(0));
-        } else {
+            return;
+        }
+
+        // Compare same types
+        if (value1.compareTo(value2) == 0) {
             context.pushToDataStack(new DoubleDataEntry(1));
+        } else {
+            context.pushToDataStack(new DoubleDataEntry(0));
         }
     }
 }
