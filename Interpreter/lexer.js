@@ -3,21 +3,19 @@ import Token, { Tokens } from "./token.js";
 class Lexer {
   tokenize(input) {
     let tokens = [];
-    var creationMode = false;
+    var arrowMode = false;
 
     for (let char of input) {
-      if (creationMode) {
-        // Decision between - and ->
+      if (arrowMode) {
+        // Check for a syntactically correct arrow ->
         if (char === ">") {
           tokens.push(new Token(Tokens.ARROW));
         } else {
-          tokens.push(new Token(Tokens.MINUS));
+          //TODO: throw error
         }
-        creationMode = false;
+        arrowMode = false;
       } else if (char === "-") {
-        creationMode = true;
-      } else if (char === "+") {
-        tokens.push(new Token(Tokens.PLUS));
+        arrowMode = true;
       } else if (this.isNumber(char)) {
         tokens.push(new Token(Tokens.INT, Number.parseInt(char)));
       } else if (char === "{") {
