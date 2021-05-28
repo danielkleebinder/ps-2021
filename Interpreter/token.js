@@ -1,4 +1,5 @@
 const Tokens = {
+  NAME: "VAR", // [a-z]+
   INT: "INT", // 0-9
   ARROW: "ARROW", // ->
   LRPAREN: "LRPAREN", // (
