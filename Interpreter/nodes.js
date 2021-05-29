@@ -12,6 +12,13 @@ class BinaryOperationNode {
   }
 }
 
+let BinaryOperations = {
+  PLUS: "PLUS",
+  MINUS: "MINUS",
+  DIV: "DIV",
+  MULT: "MULT",
+};
+
 class UnaryOperationNode {
   constructor(node, op) {
     this.node = node;
@@ -19,4 +26,9 @@ class UnaryOperationNode {
   }
 }
 
-export { IntegerNode, BinaryOperationNode, UnaryOperationNode };
+export {
+  IntegerNode,
+  BinaryOperationNode,
+  UnaryOperationNode,
+  BinaryOperations,
+};

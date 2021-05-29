@@ -2,6 +2,8 @@ import Token, { Tokens } from "./token.js";
 
 let nameRegex = /[a-z]/;
 
+// TODO: Maybe move the keywords to the parser and only save them here as names
+// because currently the generated tokens do not match the EBNF
 let keywords = {
   plus: Tokens.PLUS,
   minus: Tokens.MINUS,
