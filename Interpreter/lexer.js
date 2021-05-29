@@ -2,6 +2,13 @@ import Token, { Tokens } from "./token.js";
 
 let nameRegex = /[a-z]/;
 
+let keywords = {
+  plus: Tokens.PLUS,
+  minus: Tokens.MINUS,
+  mult: Tokens.MULT,
+  div: Tokens.DIV,
+};
+
 class Lexer {
   // TODO: refactor methods to createName and createArrow so simplify code (maybe a move to an index-based loop is necessary)
   tokenize(input) {
@@ -17,7 +24,7 @@ class Lexer {
         } else {
           // Name is complete
           // TODO: save as variable
-          tokens.push(new Token(Tokens.NAME, tempName));
+          tokens.push(this.checkKeywords(tempName));
           nameMode = false;
           tempName = "";
         }
@@ -58,6 +65,14 @@ class Lexer {
   isNumber(char) {
     let number = Number.parseInt(char);
     return Number.isInteger(number);
+  }
+
+  checkKeywords(name) {
+    if (name in keywords) {
+      return new Token(keywords[name]);
+    } else {
+      return new Token(Tokens.NAME, name);
+    }
   }
 }
 

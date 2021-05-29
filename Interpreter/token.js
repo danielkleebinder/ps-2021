@@ -7,6 +7,10 @@ const Tokens = {
   LSPAREN: "LSPAREN", // {
   RSPAREN: "RSPAREN", // }
   COMMA: "COMMA", // ,
+  PLUS: "PLUS", // plus,
+  MINUS: "MINUS", // minus,
+  MULT: "MULT", // mult
+  DIV: "DIV", // div
 };
 
 class Token {
