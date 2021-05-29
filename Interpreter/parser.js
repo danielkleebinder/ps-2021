@@ -39,7 +39,7 @@ class Parser {
   // <basic> ::= <integer>
   evalBasic() {
     if (this.current_token.type === Tokens.INT) {
-      return new IntegerNode(this.current_token);
+      return new IntegerNode(this.current_token.value);
     }
     this.next();
   }

@@ -1,6 +1,6 @@
 class IntegerNode {
-  constructor(token) {
-    this.token = token;
+  constructor(value) {
+    this.value = value;
   }
 }
 
