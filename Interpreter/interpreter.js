@@ -1,16 +1,32 @@
-import { IntegerNode } from "./nodes.js";
+import { IntegerNode, BinaryOperationNode, BinaryOperations } from "./nodes.js";
 
 class Interpreter {
   interpret(node) {
-    let result = null;
     if (node instanceof IntegerNode) {
-      result = this.handleIntegerNode(node);
+      return this.handleIntegerNode(node);
     }
-    return result;
+    if (node instanceof BinaryOperationNode) {
+      return this.handleBinaryOperationNode(node);
+    }
+    // TODO: Throw error
+    return null;
   }
 
   handleIntegerNode(node) {
     return node.value;
+  }
+
+  handleBinaryOperationNode(node) {
+    switch (node.op) {
+      case BinaryOperations.PLUS:
+        return node.leftNode.value + node.rightNode.value;
+      case BinaryOperations.MINUS:
+        return node.leftNode.value - node.rightNode.value;
+      case BinaryOperations.MULT:
+        return node.leftNode.value * node.rightNode.value;
+      case BinaryOperations.DIV: // TODO: Check for division by null
+        return node.leftNode.value / node.rightNode.value;
+    }
   }
 }
 

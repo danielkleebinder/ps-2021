@@ -5,9 +5,9 @@ class IntegerNode {
 }
 
 class BinaryOperationNode {
-  constructor(left_node, right_node, op) {
-    this.left_node = left_node;
-    this.right_node = right_node;
+  constructor(leftNode, rightNode, op) {
+    this.leftNode = leftNode;
+    this.rightNode = rightNode;
     this.op = op;
   }
 }

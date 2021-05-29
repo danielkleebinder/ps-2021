@@ -40,15 +40,32 @@ class Parser {
   //           | <name> (Basic functions)
   evalBasic() {
     this.next();
-    var node;
-    if (this.current_token.type === Tokens.INT) {
-      node = new IntegerNode(this.current_token.value);
-    } else if (this.current_token.type === Tokens.PLUS) {
-      let summand1 = this.evalBasic();
-      let summand2 = this.evalBasic();
-      node = new BinaryOperationNode(summand1, summand2, BinaryOperations.PLUS);
+    switch (this.current_token.type) {
+      case Tokens.INT:
+        return new IntegerNode(this.current_token.value);
+      case Tokens.PLUS:
+        let summand1 = this.evalBasic();
+        let summand2 = this.evalBasic();
+        return new BinaryOperationNode(
+          summand1,
+          summand2,
+          BinaryOperations.PLUS
+        );
+      case Tokens.MINUS:
+        let term1 = this.evalBasic();
+        let term2 = this.evalBasic();
+        return new BinaryOperationNode(term1, term2, BinaryOperations.MINUS);
+      case Tokens.MULT:
+        let factor1 = this.evalBasic();
+        let factor2 = this.evalBasic();
+        return new BinaryOperationNode(factor1, factor2, BinaryOperations.MULT);
+      case Tokens.DIV:
+        let dividend = this.evalBasic();
+        let divisor = this.evalBasic();
+        return new BinaryOperationNode(dividend, divisor, BinaryOperations.DIV);
     }
-    return node;
+    // TODO: Throw error
+    return null;
   }
 
   evalPairs() {

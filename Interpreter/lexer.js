@@ -37,6 +37,9 @@ class Lexer {
         // Check for a syntactically correct arrow ->
         if (char === ">") {
           tokens.push(new Token(Tokens.ARROW));
+        } else if (this.isNumber(char)) {
+          // Might be a negative integer
+          tokens.push(new Token(Tokens.INT, -Number.parseInt(char)));
         } else {
           //TODO: throw error
         }
