@@ -23,6 +23,7 @@ class Lexer {
       if (nameMode) {
         if (nameRegex.test(char)) {
           tempName = tempName.concat(char);
+          continue;
         } else {
           // Name is complete
           // TODO: save as variable
@@ -30,7 +31,6 @@ class Lexer {
           nameMode = false;
           tempName = "";
         }
-        continue;
       }
 
       if (arrowMode) {

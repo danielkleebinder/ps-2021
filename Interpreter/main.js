@@ -21,3 +21,4 @@ process = (input) => {
 // let input = "1 2 plus -> ( ) { }";
 process("plus 1 2");
 process("minus 2 -3");
+process("plus(mult 2 2)3");
