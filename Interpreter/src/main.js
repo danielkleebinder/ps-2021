@@ -1,5 +1,5 @@
 import Interpreter from "./interpreter.js";
-import Lexer from "./lexer.js";
+import Lexer from "./lexer/lexer.js";
 import Parser from "./parser.js";
 
 const process = (input) => {

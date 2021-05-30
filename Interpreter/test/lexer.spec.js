@@ -1,4 +1,4 @@
-import Lexer from "../src/lexer";
+import Lexer from "../src/lexer/lexer";
 import { Tokens } from "../src/token";
 
 let lexer = null;
@@ -11,4 +11,11 @@ test("tokenize plus operator", () => {
   expect(tokens[0]).toEqual({ type: Tokens.PLUS, value: null });
   expect(tokens[1]).toEqual({ type: Tokens.INT, value: 1 });
   expect(tokens[2]).toEqual({ type: Tokens.INT, value: 2 });
+});
+
+test("tokenize large number", () => {
+  const input = "8472412";
+  const tokens = lexer.tokenize(input);
+  expect(tokens.length).toBe(1);
+  expect(tokens[0]).toEqual({ type: Tokens.INT, value: 8472412 });
 });
