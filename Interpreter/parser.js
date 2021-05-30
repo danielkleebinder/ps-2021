@@ -63,6 +63,13 @@ class Parser {
         let dividend = this.evalBasic();
         let divisor = this.evalBasic();
         return new BinaryOperationNode(dividend, divisor, BinaryOperations.DIV);
+      case Tokens.LRPAREN:
+        let result = this.evalExpr();
+        if (this.next().type !== Tokens.RRPAREN) {
+          // No closing parenthessis found
+          // TODO: Throw error
+        }
+        return result;
     }
     // TODO: Throw error
     return null;

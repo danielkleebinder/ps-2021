@@ -19,13 +19,23 @@ class Interpreter {
   handleBinaryOperationNode(node) {
     switch (node.op) {
       case BinaryOperations.PLUS:
-        return node.leftNode.value + node.rightNode.value;
+        return this.evalNode(node.leftNode) + this.evalNode(node.rightNode);
       case BinaryOperations.MINUS:
-        return node.leftNode.value - node.rightNode.value;
+        return this.evalNode(node.leftNode) - this.evalNode(node.rightNode);
       case BinaryOperations.MULT:
-        return node.leftNode.value * node.rightNode.value;
+        return this.evalNode(node.leftNode) * this.evalNode(node.rightNode);
       case BinaryOperations.DIV: // TODO: Check for division by null
-        return node.leftNode.value / node.rightNode.value;
+        return this.evalNode(node.leftNode) / this.evalNode(node.rightNode);
+    }
+  }
+
+  evalNode(node) {
+    if (node instanceof IntegerNode) {
+      return node.value;
+    }
+
+    if (node instanceof BinaryOperationNode) {
+      return this.handleBinaryOperationNode(node);
     }
   }
 }
