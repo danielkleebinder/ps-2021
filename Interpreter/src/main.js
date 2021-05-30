@@ -1,6 +1,6 @@
 import Interpreter from "./interpreter.js";
 import Lexer from "./lexer/lexer.js";
-import Parser from "./parser.js";
+import Parser from "./parser/parser.js";
 
 const process = (input) => {
   console.log("Evaluating:", input);

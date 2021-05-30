@@ -1,4 +1,5 @@
-import Token, { Tokens } from "../token.js";
+import Token, { Tokens } from "./token.js";
+import LexerError from "./lexer-error.js";
 
 let nameRegex = /[a-z]/;
 

@@ -1,4 +1,4 @@
-import { IntegerNode, BinaryOperationNode, BinaryOperations } from "./nodes.js";
+import { IntegerNode, BinaryOperationNode, BinaryOperations } from "./parser/nodes.js";
 
 class Interpreter {
   interpret(node) {

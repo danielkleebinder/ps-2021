@@ -1,5 +1,5 @@
 import Lexer from "../src/lexer/lexer";
-import { Tokens } from "../src/token";
+import { Tokens } from "../src/lexer/token";
 
 let lexer = null;
 beforeEach(() => lexer = new Lexer());

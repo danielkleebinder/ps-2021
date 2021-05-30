@@ -1,5 +1,6 @@
-import { Tokens } from "./token.js";
-import { IntegerNode, BinaryOperationNode, BinaryOperations } from "./nodes.js";
+import { Tokens } from "../lexer/token.js";
+import { BinaryOperationNode, BinaryOperations, IntegerNode } from "./nodes.js";
+import ParserError from "./parser-error.js";
 
 class Parser {
   parse(tokens) {
@@ -50,7 +51,7 @@ class Parser {
         return new BinaryOperationNode(
           summand1,
           summand2,
-          BinaryOperations.PLUS
+          BinaryOperations.PLUS,
         );
       case Tokens.MINUS:
         let term1 = this.#evalBasic();
@@ -67,8 +68,7 @@ class Parser {
       case Tokens.LRPAREN:
         let result = this.#evalExpr();
         if (this.#next().type !== Tokens.RRPAREN) {
-          // No closing parenthessis found
-          // TODO: Throw error
+          throw new ParserError("No closing parenthesis found");
         }
         return result;
     }
