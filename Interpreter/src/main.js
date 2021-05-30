@@ -32,7 +32,9 @@ process("{a=1}a");
 process("{" +
   "append = {head=10, tail=mult 10 5}," +
   "gen = (plus(mult(minus 5 1)2)3)" +
-  "}");
+  "} gen append");
 process("x -> x");
+process("{x=1}x");
+process("{a = x -> 1}a");
 
 export default process;

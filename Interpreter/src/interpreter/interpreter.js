@@ -1,4 +1,5 @@
 import InterpreterError from "./interpreter-error.js";
+import SymbolRegistry from "../symbols/symbol-registry.js";
 import {
   AccessNode,
   AssignNode,
@@ -14,7 +15,11 @@ import {
 
 
 class Interpreter {
+
+  #globalSymbols;
+
   interpret(node) {
+    this.#globalSymbols = new SymbolRegistry();
     const result = this.#evalNode(node);
     if (result != null) {
       return result;
@@ -54,13 +59,20 @@ class Interpreter {
   }
 
   #handleRecordNode(node) {
+    node.properties.forEach(property => this.#evalNode(property));
     return "<record create>";
   }
 
   #handleAssignNode(node) {
+    const name = node.identifier;
+    const value = this.#evalNode(node.assignmentExpr);
+    this.#globalSymbols.set(name, value);
+    return "<variable assign>";
   }
 
-  #handleVarAccessNode(node) {
+  #handleAccessNode(node) {
+    const name = node.identifier;
+    return this.#globalSymbols.get(name);
   }
 
   #handleConditionNode(node) {
@@ -99,7 +111,7 @@ class Interpreter {
     }
 
     if (node instanceof AccessNode) {
-      return this.#handleVarAccessNode(node);
+      return this.#handleAccessNode(node);
     }
 
     if (node instanceof ConditionNode) {

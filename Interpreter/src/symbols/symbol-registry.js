@@ -1,7 +1,7 @@
 /**
  * The symbol register is a sort of a linked list which store local variables.
  */
-class SymbolRegister {
+class SymbolRegistry {
 
   #symbols;
   #parent;
@@ -34,4 +34,4 @@ class SymbolRegister {
   }
 }
 
-export default SymbolRegister;
+export default SymbolRegistry;
