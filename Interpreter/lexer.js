@@ -27,7 +27,7 @@ class Lexer {
         } else {
           // Name is complete
           // TODO: save as variable
-          tokens.push(this.checkKeywords(tempName));
+          tokens.push(this.#checkKeywords(tempName));
           nameMode = false;
           tempName = "";
         }
@@ -37,7 +37,7 @@ class Lexer {
         // Check for a syntactically correct arrow ->
         if (char === ">") {
           tokens.push(new Token(Tokens.ARROW));
-        } else if (this.isNumber(char)) {
+        } else if (this.#isNumber(char)) {
           // Might be a negative integer
           tokens.push(new Token(Tokens.INT, -Number.parseInt(char)));
         } else {
@@ -46,7 +46,7 @@ class Lexer {
         arrowMode = false;
       } else if (char === "-") {
         arrowMode = true;
-      } else if (this.isNumber(char)) {
+      } else if (this.#isNumber(char)) {
         tokens.push(new Token(Tokens.INT, Number.parseInt(char)));
       } else if (char === "{") {
         tokens.push(new Token(Tokens.LSPAREN));
@@ -67,12 +67,12 @@ class Lexer {
     return tokens;
   }
 
-  isNumber(char) {
+  #isNumber(char) {
     let number = Number.parseInt(char);
     return Number.isInteger(number);
   }
 
-  checkKeywords(name) {
+  #checkKeywords(name) {
     if (name in keywords) {
       return new Token(keywords[name]);
     } else {

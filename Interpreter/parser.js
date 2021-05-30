@@ -6,11 +6,11 @@ class Parser {
     this.pos = -1;
     this.tokens = tokens;
     this.current_token = null;
-    return this.evalExpr();
+    return this.#evalExpr();
   }
 
-  next() {
-    if (this.hasNext()) {
+  #next() {
+    if (this.#hasNext()) {
       this.pos += 1;
       this.current_token = this.tokens[this.pos];
     }
@@ -18,55 +18,55 @@ class Parser {
     // else TODO: Throw errow
   }
 
-  hasNext() {
+  #hasNext() {
     return this.pos + 1 < this.tokens.length;
   }
 
   // -- Grammar --
 
   // <expr> ::= <apply>
-  evalExpr() {
-    return this.evalApply();
+  #evalExpr() {
+    return this.#evalApply();
     // TODO: Not Implemented yet
   }
 
   // <apply> ::= <basic>
-  evalApply() {
-    return this.evalBasic();
+  #evalApply() {
+    return this.#evalBasic();
     // TODO: Not Implemented yet
   }
 
   // <basic> ::= <integer>
   //           | <name> (Basic functions)
   //           | ( <expr> )
-  evalBasic() {
-    this.next();
+  #evalBasic() {
+    this.#next();
     switch (this.current_token.type) {
       case Tokens.INT:
         return new IntegerNode(this.current_token.value);
       case Tokens.PLUS:
-        let summand1 = this.evalBasic();
-        let summand2 = this.evalBasic();
+        let summand1 = this.#evalBasic();
+        let summand2 = this.#evalBasic();
         return new BinaryOperationNode(
           summand1,
           summand2,
           BinaryOperations.PLUS
         );
       case Tokens.MINUS:
-        let term1 = this.evalBasic();
-        let term2 = this.evalBasic();
+        let term1 = this.#evalBasic();
+        let term2 = this.#evalBasic();
         return new BinaryOperationNode(term1, term2, BinaryOperations.MINUS);
       case Tokens.MULT:
-        let factor1 = this.evalBasic();
-        let factor2 = this.evalBasic();
+        let factor1 = this.#evalBasic();
+        let factor2 = this.#evalBasic();
         return new BinaryOperationNode(factor1, factor2, BinaryOperations.MULT);
       case Tokens.DIV:
-        let dividend = this.evalBasic();
-        let divisor = this.evalBasic();
+        let dividend = this.#evalBasic();
+        let divisor = this.#evalBasic();
         return new BinaryOperationNode(dividend, divisor, BinaryOperations.DIV);
       case Tokens.LRPAREN:
-        let result = this.evalExpr();
-        if (this.next().type !== Tokens.RRPAREN) {
+        let result = this.#evalExpr();
+        if (this.#next().type !== Tokens.RRPAREN) {
           // No closing parenthessis found
           // TODO: Throw error
         }
@@ -76,7 +76,7 @@ class Parser {
     return null;
   }
 
-  evalPairs() {
+  #evalPairs() {
     // TODO: Not Implemented yet
   }
 }
