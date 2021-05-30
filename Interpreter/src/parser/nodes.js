@@ -12,7 +12,7 @@ class BinaryOperationNode {
   }
 }
 
-let BinaryOperations = {
+const BinaryOperations = {
   PLUS: "PLUS",
   MINUS: "MINUS",
   DIV: "DIV",
@@ -26,9 +26,14 @@ class UnaryOperationNode {
   }
 }
 
+const UnaryOperations = {
+  NEGATE: "-",
+};
+
 export {
   IntegerNode,
   BinaryOperationNode,
   UnaryOperationNode,
   BinaryOperations,
+  UnaryOperations,
 };

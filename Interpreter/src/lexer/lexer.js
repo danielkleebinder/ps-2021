@@ -127,7 +127,7 @@ class Lexer {
 
     // Might be a negative integer
     if (this.#isNumber(char)) {
-      return new Token(Tokens.INT, -this.#tokenizeNumber());
+      return new Token(Tokens.NEGATE);
     }
 
     // Something went syntactically wrong

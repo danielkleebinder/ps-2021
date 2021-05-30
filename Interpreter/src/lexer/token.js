@@ -1,16 +1,17 @@
 const Tokens = {
-  NAME: "VAR", // [a-z]+
-  INT: "INT", // 0-9
-  ARROW: "ARROW", // ->
+  NAME: "VAR",        // [a-z]+
+  INT: "INT",         // 0-9
+  NEGATE: "NEGATE",   // -
+  ARROW: "ARROW",     // ->
   LRPAREN: "LRPAREN", // (
   RRPAREN: "RRPAREN", // )
   LSPAREN: "LSPAREN", // {
   RSPAREN: "RSPAREN", // }
-  COMMA: "COMMA", // ,
-  PLUS: "PLUS", // plus,
-  MINUS: "MINUS", // minus,
-  MULT: "MULT", // mult
-  DIV: "DIV", // div
+  COMMA: "COMMA",     // ,
+  PLUS: "PLUS",       // Addition (e.g. plus 2 2)
+  MINUS: "MINUS",     // Subtraction (e.g. sub 3 1)
+  MULT: "MULT",       // Multiplication (e.g. mult 2 3)
+  DIV: "DIV",         // Division (e.g. div 4 2)
 };
 
 class Token {

@@ -1,26 +1,31 @@
 import { Tokens } from "../lexer/token.js";
-import { BinaryOperationNode, BinaryOperations, IntegerNode } from "./nodes.js";
+import { BinaryOperationNode, BinaryOperations, IntegerNode, UnaryOperationNode, UnaryOperations } from "./nodes.js";
 import ParserError from "./parser-error.js";
 
 class Parser {
+
+  #position = -1;
+  #tokens = [];
+  #currentToken = null;
+
   parse(tokens) {
-    this.pos = -1;
-    this.tokens = tokens;
-    this.current_token = null;
+    this.#position = -1;
+    this.#tokens = tokens;
+    this.#currentToken = null;
     return this.#evalExpr();
   }
 
   #next() {
     if (this.#hasNext()) {
-      this.pos += 1;
-      this.current_token = this.tokens[this.pos];
+      this.#position += 1;
+      this.#currentToken = this.#tokens[this.#position];
     }
-    return this.current_token;
+    return this.#currentToken;
     // else TODO: Throw errow
   }
 
   #hasNext() {
-    return this.pos + 1 < this.tokens.length;
+    return this.#position + 1 < this.#tokens.length;
   }
 
   // -- Grammar --
@@ -42,9 +47,9 @@ class Parser {
   //           | ( <expr> )
   #evalBasic() {
     this.#next();
-    switch (this.current_token.type) {
+    switch (this.#currentToken.type) {
       case Tokens.INT:
-        return new IntegerNode(this.current_token.value);
+        return new IntegerNode(this.#currentToken.value);
       case Tokens.PLUS:
         let summand1 = this.#evalBasic();
         let summand2 = this.#evalBasic();
@@ -65,6 +70,9 @@ class Parser {
         let dividend = this.#evalBasic();
         let divisor = this.#evalBasic();
         return new BinaryOperationNode(dividend, divisor, BinaryOperations.DIV);
+      case Tokens.NEGATE:
+        let num = this.#evalBasic();
+        return new UnaryOperationNode(num, UnaryOperations.NEGATE);
       case Tokens.LRPAREN:
         let result = this.#evalExpr();
         if (this.#next().type !== Tokens.RRPAREN) {
@@ -72,8 +80,7 @@ class Parser {
         }
         return result;
     }
-    // TODO: Throw error
-    return null;
+    throw new ParserError(`Evaluation of ${JSON.stringify(this.#currentToken)} is not possible`);
   }
 
   #evalPairs() {

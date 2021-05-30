@@ -1,15 +1,19 @@
-import { IntegerNode, BinaryOperationNode, BinaryOperations } from "./parser/nodes.js";
+import {
+  BinaryOperationNode,
+  BinaryOperations,
+  IntegerNode,
+  UnaryOperationNode,
+  UnaryOperations,
+} from "../parser/nodes.js";
+import InterpreterError from "./interpreter-error.js";
 
 class Interpreter {
   interpret(node) {
-    if (node instanceof IntegerNode) {
-      return this.#handleIntegerNode(node);
+    const result = this.#evalNode(node);
+    if (result != null) {
+      return result;
     }
-    if (node instanceof BinaryOperationNode) {
-      return this.#handleBinaryOperationNode(node);
-    }
-    // TODO: Throw error
-    return null;
+    throw new InterpreterError(`Unknown node type: ${node?.type}`);
   }
 
   #handleIntegerNode(node) {
@@ -29,14 +33,27 @@ class Interpreter {
     }
   }
 
+  #handleUnaryOperationNode(node) {
+    switch (node.op) {
+      case UnaryOperations.NEGATE:
+        return -this.#evalNode(node.node);
+    }
+  }
+
   #evalNode(node) {
     if (node instanceof IntegerNode) {
-      return node.value;
+      return this.#handleIntegerNode(node);
     }
 
     if (node instanceof BinaryOperationNode) {
       return this.#handleBinaryOperationNode(node);
     }
+
+    if (node instanceof UnaryOperationNode) {
+      return this.#handleUnaryOperationNode(node);
+    }
+
+    return null;
   }
 }
 
