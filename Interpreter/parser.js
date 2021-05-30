@@ -38,6 +38,7 @@ class Parser {
 
   // <basic> ::= <integer>
   //           | <name> (Basic functions)
+  //           | ( <expr> )
   evalBasic() {
     this.next();
     switch (this.current_token.type) {
