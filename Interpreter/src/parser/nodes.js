@@ -30,12 +30,6 @@ const UnaryOperations = {
   NEGATE: "-",
 };
 
-class VarAccessNode {
-  constructor(identifier) {
-    this.identifier = identifier;
-  }
-}
-
 class ConditionNode {
   constructor(condition, ifCase, elseCase) {
     this.condition = condition;
@@ -44,12 +38,37 @@ class ConditionNode {
   }
 }
 
+class RecordNode {
+  constructor(properties = []) {
+    this.properties = properties;
+  }
+}
+
+class AssignNode {
+  constructor(identifier, assignmentExpr) {
+    this.identifier = identifier;
+    this.assignmentExpr = assignmentExpr;
+  }
+}
+
+class AccessNode {
+  constructor(identifier) {
+    this.identifier = identifier;
+  }
+}
+
+class FunctionCallNode {
+}
+
 export {
   IntegerNode,
   BinaryOperationNode,
   UnaryOperationNode,
   BinaryOperations,
   UnaryOperations,
-  VarAccessNode,
   ConditionNode,
+  RecordNode,
+  AssignNode,
+  AccessNode,
+  FunctionCallNode,
 };

@@ -1,13 +1,16 @@
 import InterpreterError from "./interpreter-error.js";
 import {
+  AccessNode,
+  AssignNode,
   BinaryOperationNode,
   BinaryOperations,
   ConditionNode,
   IntegerNode,
+  RecordNode,
   UnaryOperationNode,
   UnaryOperations,
-  VarAccessNode,
 } from "../parser/nodes.js";
+
 
 class Interpreter {
   interpret(node) {
@@ -42,6 +45,13 @@ class Interpreter {
     }
   }
 
+  #handleRecordNode(node) {
+    return "<record create>";
+  }
+
+  #handleAssignNode(node) {
+  }
+
   #handleVarAccessNode(node) {
   }
 
@@ -68,7 +78,15 @@ class Interpreter {
       return this.#handleUnaryOperationNode(node);
     }
 
-    if (node instanceof VarAccessNode) {
+    if (node instanceof RecordNode) {
+      return this.#handleRecordNode(node);
+    }
+
+    if (node instanceof AssignNode) {
+      return this.#handleAssignNode(node);
+    }
+
+    if (node instanceof AccessNode) {
       return this.#handleVarAccessNode(node);
     }
 

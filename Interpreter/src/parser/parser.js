@@ -1,13 +1,15 @@
 import ParserError from "./parser-error.js";
 import { Tokens } from "../lexer/token.js";
 import {
+  AccessNode,
+  AssignNode,
   BinaryOperationNode,
   BinaryOperations,
   ConditionNode,
   IntegerNode,
+  RecordNode,
   UnaryOperationNode,
   UnaryOperations,
-  VarAccessNode,
 } from "./nodes.js";
 
 class Parser {
@@ -63,7 +65,7 @@ class Parser {
       case Tokens.INT:
         return new IntegerNode(this.#currentToken.value);
       case Tokens.NAME:
-        return new VarAccessNode(this.#currentToken.value);
+        return new AccessNode(this.#currentToken.value);
       case Tokens.PLUS:
         const summand1 = this.#evalBasic();
         const summand2 = this.#evalBasic();
@@ -89,17 +91,42 @@ class Parser {
         const elseCase = this.#evalBasic();
         return new ConditionNode(condition, ifCase, elseCase);
       case Tokens.LRPAREN:
-        const result = this.#evalExpr();
+        const evaluationResult = this.#evalExpr();
         if (!this.#hasNext() || this.#next().type !== Tokens.RRPAREN) {
           throw new ParserError("No closing parenthesis found");
         }
-        return result;
+        return evaluationResult;
+      case Tokens.LSPAREN:
+        const record = this.#evalPairs();
+        if (this.#currentToken.type !== Tokens.RSPAREN) {
+          throw new ParserError("Record definition not closed");
+        }
+        return record;
     }
     throw new ParserError(`Evaluation of ${JSON.stringify(this.#currentToken)} is not possible`);
   }
 
+  // <pairs> ::= <name> = <expr>
+  //           | <pairs> ’,’ <name> = <expr>
   #evalPairs() {
-    // TODO: Not Implemented yet
+    this.#next();
+    const properties = [];
+    while (this.#currentToken.type === Tokens.NAME || this.#currentToken.type === Tokens.Comma) {
+      if (this.#currentToken.type === Tokens.Comma) {
+        this.#next();
+      }
+      const name = this.#currentToken.value;
+
+      // There was no assign statement (e.g. a = 3)
+      if (!this.#hasNext() || this.#next().type !== Tokens.Assign) {
+        throw new ParserError("Invalid pair");
+      }
+
+      const expr = this.#evalExpr();
+      properties.push(new AssignNode(name, expr));
+      this.#next();
+    }
+    return new RecordNode(properties);
   }
 }
 

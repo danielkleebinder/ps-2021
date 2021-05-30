@@ -59,7 +59,9 @@ class Lexer {
       } else if (char === ")") {
         tokens.push(new Token(Tokens.RRPAREN));
       } else if (char === ",") {
-        tokens.push(new Token(Tokens.COMMA));
+        tokens.push(new Token(Tokens.Comma));
+      } else if (char === "=") {
+        tokens.push(new Token(Tokens.Assign));
       }
 
       // ... and advance the cursor manually
