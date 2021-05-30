@@ -3,12 +3,12 @@
  */
 class SymbolRegistry {
 
+  parent;
   #symbols;
-  #parent;
 
   constructor(parent = null) {
+    this.parent = parent;
     this.#symbols = {};
-    this.#parent = parent;
   }
 
   /**
@@ -18,8 +18,8 @@ class SymbolRegistry {
    */
   get(identifier) {
     const result = this.#symbols[identifier];
-    if (result == null && this.#parent != null) {
-      return this.#parent.get(identifier);
+    if (result == null && this.parent != null) {
+      return this.parent.get(identifier);
     }
     return result;
   }
@@ -31,6 +31,14 @@ class SymbolRegistry {
    */
   set(identifier, value) {
     this.#symbols[identifier] = value;
+  }
+
+  /**
+   * Removes the value with the given identifier from the register.
+   * @param identifier Identifier.
+   */
+  remove(identifier) {
+    delete this.#symbols[identifier];
   }
 }
 

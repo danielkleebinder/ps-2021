@@ -6,7 +6,8 @@ import {
   BinaryOperationNode,
   BinaryOperations,
   ConditionNode,
-  FunctionDefinitionNode,
+  FunctionCallNode,
+  FunctionNode,
   IntegerNode,
   RecordNode,
   RootNode,
@@ -42,6 +43,10 @@ class Parser {
     return this.#currentToken;
   }
 
+  #peekNext() {
+    return this.#tokens[this.#position + 1];
+  }
+
   #hasNext() {
     return this.#position + 1 < this.#tokens.length;
   }
@@ -51,13 +56,11 @@ class Parser {
   // <expr> ::= <apply>
   #evalExpr() {
     return this.#evalApply();
-    // TODO: Not Implemented yet
   }
 
   // <apply> ::= <basic>
   #evalApply() {
     return this.#evalBasic();
-    // TODO: Not Implemented yet
   }
 
   // <basic> ::= <integer>
@@ -106,7 +109,7 @@ class Parser {
       case Tokens.LSPAREN:
         const record = this.#evalPairs();
         if (this.#currentToken.type !== Tokens.RSPAREN) {
-          throw new ParserError("Record definition not closed");
+          throw new ParserError(`Record definition not closed. Symbol was ${JSON.stringify(this.#currentToken)}`);
         }
         return record;
     }
@@ -116,32 +119,34 @@ class Parser {
   // <pairs> ::= <name> = <expr>
   //           | <pairs> ’,’ <name> = <expr>
   #evalPairs() {
-    this.#next();
     const properties = [];
-    while (this.#currentToken.type === Tokens.NAME || this.#currentToken.type === Tokens.Comma) {
-      if (this.#currentToken.type === Tokens.Comma) {
-        this.#next();
-      }
-      properties.push(this.#evalName());
+    do {
       this.#next();
-    }
+      properties.push(this.#evalName());
+    } while (this.#hasNext() && this.#next().type === Tokens.Comma);
     return new RecordNode(properties);
   }
 
-  // <name> = <expr>
   #evalName() {
     const name = this.#currentToken.value;
 
-    if (this.#hasNext()) {
-      this.#next();
-      switch (this.#currentToken.type) {
-        case Tokens.Assign:
-          const expr = this.#evalExpr();
-          return new AssignNode(name, expr);
-        case Tokens.ARROW:
-          const fun = this.#evalExpr();
-          return new FunctionDefinitionNode(name, fun);
-      }
+    switch (this.#peekNext()?.type) {
+      case Tokens.Assign:
+        this.#next();
+        const expr = this.#evalExpr();
+        return new AssignNode(name, expr);
+      case Tokens.ARROW:
+        this.#next();
+        const argumentName = name;
+        const body = this.#evalExpr();
+        return new FunctionNode(argumentName, body);
+      case Tokens.LRPAREN:
+        this.#next();
+        const parameter = this.#evalBasic();
+        if (this.#hasNext() && this.#next().type !== Tokens.RRPAREN) {
+          throw new ParserError("Function call not closed");
+        }
+        return new FunctionCallNode(name, parameter);
     }
 
     // Standalone names are access identifiers

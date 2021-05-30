@@ -28,13 +28,15 @@ process("cond (plus 0 1) 999");
 process("{a=1}");
 process("{a=1,b=10}");
 process("{a=1,b=mult(plus 3 2)5}");
-process("{a=1}a");
-process("{" +
-  "append = {head=10, tail=mult 10 5}," +
-  "gen = (plus(mult(minus 5 1)2)3)" +
-  "} gen append");
-process("x -> x");
+process("{a=1}");
 process("{x=1}x");
-process("{a = x -> 1}a");
+process("{a = x -> 1} a(1)");
+process("{a = x -> x} a(3)");
+process("{a = x -> mult(plus 1 x) 3} a(3)");
+process("{ a = x -> x } a(3)");
+process("{}");
+process("{ a = x -> x, b = x -> (mult(plus 1 x) a(5)) } b(1)");
+process("{ a = x -> x, b = x -> cond x 2 3 } b(0)");
+process("{ a = x -> x, b = x -> { res = a(x) } } b(999) res");
 
 export default process;

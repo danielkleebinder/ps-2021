@@ -6,6 +6,7 @@ import {
   BinaryOperationNode,
   BinaryOperations,
   ConditionNode,
+  FunctionCallNode,
   IntegerNode,
   RecordNode,
   RootNode,
@@ -65,14 +66,37 @@ class Interpreter {
 
   #handleAssignNode(node) {
     const name = node.identifier;
-    const value = this.#evalNode(node.assignmentExpr);
-    this.#globalSymbols.set(name, value);
+    this.#globalSymbols.set(name, node.assignmentExpr);
     return "<variable assign>";
   }
 
   #handleAccessNode(node) {
     const name = node.identifier;
-    return this.#globalSymbols.get(name);
+    const ref = this.#globalSymbols.get(name);
+    return this.#evalNode(ref);
+  }
+
+  #handleFunctionCallNode(node) {
+    const { name, argument } = node;
+    const fun = this.#globalSymbols.get(name);
+    if (fun == null) {
+      throw new InterpreterError(`Function with name "${name}" not declared`);
+    }
+
+
+    // I create a temporal context for this function here. The arguments value
+    // will be removed afterwards.
+    const evaluatedParameter = this.#evalNode(argument);
+
+    // Create a copy of the previous frame and use a new symbol registry for this function call.
+    this.#globalSymbols = new SymbolRegistry(this.#globalSymbols);
+    this.#globalSymbols.set(fun.argument, evaluatedParameter);
+    const result = this.#evalNode(fun.body);
+
+    // Restore the parent scope state.
+    this.#globalSymbols = this.#globalSymbols.parent;
+
+    return result;
   }
 
   #handleConditionNode(node) {
@@ -118,7 +142,11 @@ class Interpreter {
       return this.#handleConditionNode(node);
     }
 
-    return null;
+    if (node instanceof FunctionCallNode) {
+      return this.#handleFunctionCallNode(node);
+    }
+
+    return node;
   }
 }
 
