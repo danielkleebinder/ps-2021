@@ -71,7 +71,7 @@ class Parser {
       case Tokens.INT:
         return new IntegerNode(this.#currentToken.value);
       case Tokens.NAME:
-        return new AccessNode(this.#currentToken.value);
+        return this.#evalName();
       case Tokens.PLUS:
         const summand1 = this.#evalBasic();
         const summand2 = this.#evalBasic();
@@ -121,18 +121,27 @@ class Parser {
       if (this.#currentToken.type === Tokens.Comma) {
         this.#next();
       }
-      const name = this.#currentToken.value;
-
-      // There was no assign statement (e.g. a = 3)
-      if (!this.#hasNext() || this.#next().type !== Tokens.Assign) {
-        throw new ParserError("Invalid pair");
-      }
-
-      const expr = this.#evalExpr();
-      properties.push(new AssignNode(name, expr));
+      properties.push(this.#evalName());
       this.#next();
     }
     return new RecordNode(properties);
+  }
+
+  // <name> = <expr>
+  #evalName() {
+    const name = this.#currentToken.value;
+
+    if (this.#hasNext()) {
+      this.#next();
+      switch (this.#currentToken.type) {
+        case Tokens.Assign:
+          const expr = this.#evalExpr();
+          return new AssignNode(name, expr);
+      }
+    }
+
+    // Standalone names are access identifiers
+    return new AccessNode(name);
   }
 }
 
