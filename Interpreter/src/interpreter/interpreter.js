@@ -7,6 +7,7 @@ import {
   ConditionNode,
   IntegerNode,
   RecordNode,
+  RootNode,
   UnaryOperationNode,
   UnaryOperations,
 } from "../parser/nodes.js";
@@ -19,6 +20,10 @@ class Interpreter {
       return result;
     }
     throw new InterpreterError(`Unknown node type: ${node?.type}`);
+  }
+
+  #handleRootNode(node) {
+    return node.statements.map(statement => this.#evalNode(statement));
   }
 
   #handleIntegerNode(node) {
@@ -66,6 +71,10 @@ class Interpreter {
   }
 
   #evalNode(node) {
+    if (node instanceof RootNode) {
+      return this.#handleRootNode(node);
+    }
+
     if (node instanceof IntegerNode) {
       return this.#handleIntegerNode(node);
     }

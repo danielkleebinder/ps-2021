@@ -8,6 +8,7 @@ import {
   ConditionNode,
   IntegerNode,
   RecordNode,
+  RootNode,
   UnaryOperationNode,
   UnaryOperations,
 } from "./nodes.js";
@@ -22,7 +23,12 @@ class Parser {
     this.#position = -1;
     this.#tokens = tokens;
     this.#currentToken = null;
-    return this.#evalExpr();
+
+    const statements = [];
+    while (this.#hasNext()) {
+      statements.push(this.#evalExpr());
+    }
+    return new RootNode(statements);
   }
 
   #next() {

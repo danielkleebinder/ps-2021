@@ -1,3 +1,9 @@
+class RootNode {
+  constructor(statements = []) {
+    this.statements = statements;
+  }
+}
+
 class IntegerNode {
   constructor(value) {
     this.value = value;
@@ -61,6 +67,7 @@ class FunctionCallNode {
 }
 
 export {
+  RootNode,
   IntegerNode,
   BinaryOperationNode,
   UnaryOperationNode,

@@ -28,5 +28,6 @@ process("cond (plus 0 1) 999");
 process("{a=1}");
 process("{a=1,b=10}");
 process("{a=1,b=mult(plus 3 2)5}");
+process("{a=1}a");
 
 export default process;
