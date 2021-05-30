@@ -1,11 +1,13 @@
+import InterpreterError from "./interpreter-error.js";
 import {
   BinaryOperationNode,
   BinaryOperations,
+  ConditionNode,
   IntegerNode,
   UnaryOperationNode,
   UnaryOperations,
+  VarAccessNode,
 } from "../parser/nodes.js";
-import InterpreterError from "./interpreter-error.js";
 
 class Interpreter {
   interpret(node) {
@@ -40,6 +42,19 @@ class Interpreter {
     }
   }
 
+  #handleVarAccessNode(node) {
+  }
+
+  #handleConditionNode(node) {
+    const conditionResult = this.#evalNode(node.condition);
+    if (conditionResult !== 0 && conditionResult !== "{}") {
+      return this.#evalNode(node.ifCase);
+    } else if (node.elseCase != null) {
+      return this.#evalNode(node.elseCase);
+    }
+    return null;
+  }
+
   #evalNode(node) {
     if (node instanceof IntegerNode) {
       return this.#handleIntegerNode(node);
@@ -51,6 +66,14 @@ class Interpreter {
 
     if (node instanceof UnaryOperationNode) {
       return this.#handleUnaryOperationNode(node);
+    }
+
+    if (node instanceof VarAccessNode) {
+      return this.#handleVarAccessNode(node);
+    }
+
+    if (node instanceof ConditionNode) {
+      return this.#handleConditionNode(node);
     }
 
     return null;

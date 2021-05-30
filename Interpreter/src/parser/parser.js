@@ -1,6 +1,14 @@
-import { Tokens } from "../lexer/token.js";
-import { BinaryOperationNode, BinaryOperations, IntegerNode, UnaryOperationNode, UnaryOperations } from "./nodes.js";
 import ParserError from "./parser-error.js";
+import { Tokens } from "../lexer/token.js";
+import {
+  BinaryOperationNode,
+  BinaryOperations,
+  ConditionNode,
+  IntegerNode,
+  UnaryOperationNode,
+  UnaryOperations,
+  VarAccessNode,
+} from "./nodes.js";
 
 class Parser {
 
@@ -19,9 +27,10 @@ class Parser {
     if (this.#hasNext()) {
       this.#position += 1;
       this.#currentToken = this.#tokens[this.#position];
+    } else {
+      this.#currentToken = null;
     }
     return this.#currentToken;
-    // else TODO: Throw errow
   }
 
   #hasNext() {
@@ -47,35 +56,41 @@ class Parser {
   //           | ( <expr> )
   #evalBasic() {
     this.#next();
+    if (this.#currentToken == null) {
+      return null;
+    }
     switch (this.#currentToken.type) {
       case Tokens.INT:
         return new IntegerNode(this.#currentToken.value);
+      case Tokens.NAME:
+        return new VarAccessNode(this.#currentToken.value);
       case Tokens.PLUS:
-        let summand1 = this.#evalBasic();
-        let summand2 = this.#evalBasic();
-        return new BinaryOperationNode(
-          summand1,
-          summand2,
-          BinaryOperations.PLUS,
-        );
+        const summand1 = this.#evalBasic();
+        const summand2 = this.#evalBasic();
+        return new BinaryOperationNode(summand1, summand2, BinaryOperations.PLUS);
       case Tokens.MINUS:
-        let term1 = this.#evalBasic();
-        let term2 = this.#evalBasic();
+        const term1 = this.#evalBasic();
+        const term2 = this.#evalBasic();
         return new BinaryOperationNode(term1, term2, BinaryOperations.MINUS);
       case Tokens.MULT:
-        let factor1 = this.#evalBasic();
-        let factor2 = this.#evalBasic();
+        const factor1 = this.#evalBasic();
+        const factor2 = this.#evalBasic();
         return new BinaryOperationNode(factor1, factor2, BinaryOperations.MULT);
       case Tokens.DIV:
-        let dividend = this.#evalBasic();
-        let divisor = this.#evalBasic();
+        const dividend = this.#evalBasic();
+        const divisor = this.#evalBasic();
         return new BinaryOperationNode(dividend, divisor, BinaryOperations.DIV);
       case Tokens.NEGATE:
-        let num = this.#evalBasic();
+        const num = this.#evalBasic();
         return new UnaryOperationNode(num, UnaryOperations.NEGATE);
+      case Tokens.Cond:
+        const condition = this.#evalBasic();
+        const ifCase = this.#evalBasic();
+        const elseCase = this.#evalBasic();
+        return new ConditionNode(condition, ifCase, elseCase);
       case Tokens.LRPAREN:
-        let result = this.#evalExpr();
-        if (this.#next().type !== Tokens.RRPAREN) {
+        const result = this.#evalExpr();
+        if (!this.#hasNext() || this.#next().type !== Tokens.RRPAREN) {
           throw new ParserError("No closing parenthesis found");
         }
         return result;

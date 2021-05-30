@@ -1,16 +1,9 @@
 import Token, { Tokens } from "./token.js";
 import LexerError from "./lexer-error.js";
+import Keywords from "./keywords.js";
 
 let nameRegex = /[a-z]/;
 
-// TODO: Maybe move the keywords to the parser and only save them here as names
-// because currently the generated tokens do not match the EBNF
-let keywords = {
-  plus: Tokens.PLUS,
-  minus: Tokens.MINUS,
-  mult: Tokens.MULT,
-  div: Tokens.DIV,
-};
 
 class Lexer {
 
@@ -160,8 +153,8 @@ class Lexer {
   }
 
   #checkKeywords(name) {
-    if (name in keywords) {
-      return new Token(keywords[name]);
+    if (name in Keywords) {
+      return new Token(Keywords[name]);
     } else {
       return new Token(Tokens.NAME, name);
     }

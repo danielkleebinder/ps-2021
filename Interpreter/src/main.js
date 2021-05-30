@@ -23,5 +23,7 @@ const process = (input) => {
 process("plus 1 2");
 process("minus 2 -3");
 process("plus(mult 2 2)3");
+process("cond 1 8");
+process("cond (plus 0 1) 999");
 
 export default process;
