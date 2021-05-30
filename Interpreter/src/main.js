@@ -29,5 +29,9 @@ process("{a=1}");
 process("{a=1,b=10}");
 process("{a=1,b=mult(plus 3 2)5}");
 process("{a=1}a");
+process("{" +
+  "append = {head=10, tail=mult 10 5}," +
+  "gen = (plus(mult(minus 5 1)2)3)" +
+  "}");
 
 export default process;

@@ -23,7 +23,10 @@ class Interpreter {
   }
 
   #handleRootNode(node) {
-    return node.statements.map(statement => this.#evalNode(statement));
+    const result = node.statements
+      .map(statement => this.#evalNode(statement))
+      .filter(evaluatedResult => evaluatedResult != null);
+    return result.length === 1 ? result[0] : result;
   }
 
   #handleIntegerNode(node) {
