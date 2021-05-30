@@ -2,7 +2,7 @@ import Interpreter from "./interpreter.js";
 import Lexer from "./lexer.js";
 import Parser from "./parser.js";
 
-process = (input) => {
+const process = (input) => {
   console.log("Evaluating:", input);
   let lexer = new Lexer();
   let tokenized = lexer.tokenize(input);
@@ -14,11 +14,14 @@ process = (input) => {
 
   let interpreter = new Interpreter();
   let result = interpreter.interpret(ast);
-
   console.log("Result:", result);
+
+  return result;
 };
 
 // let input = "1 2 plus -> ( ) { }";
 process("plus 1 2");
 process("minus 2 -3");
 process("plus(mult 2 2)3");
+
+export default process;
