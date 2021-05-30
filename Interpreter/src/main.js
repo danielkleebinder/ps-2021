@@ -33,5 +33,6 @@ process("{" +
   "append = {head=10, tail=mult 10 5}," +
   "gen = (plus(mult(minus 5 1)2)3)" +
   "}");
+process("x -> x");
 
 export default process;

@@ -6,6 +6,7 @@ import {
   BinaryOperationNode,
   BinaryOperations,
   ConditionNode,
+  FunctionDefinitionNode,
   IntegerNode,
   RecordNode,
   RootNode,
@@ -137,6 +138,9 @@ class Parser {
         case Tokens.Assign:
           const expr = this.#evalExpr();
           return new AssignNode(name, expr);
+        case Tokens.ARROW:
+          const fun = this.#evalExpr();
+          return new FunctionDefinitionNode(name, fun);
       }
     }
 

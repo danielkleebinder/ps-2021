@@ -63,7 +63,18 @@ class AccessNode {
   }
 }
 
+class FunctionDefinitionNode {
+  constructor(args, body) {
+    this.args = args;
+    this.body = body;
+  }
+}
+
 class FunctionCallNode {
+  constructor(name, args) {
+    this.name = name;
+    this.args = args;
+  }
 }
 
 export {
@@ -77,5 +88,6 @@ export {
   RecordNode,
   AssignNode,
   AccessNode,
+  FunctionDefinitionNode,
   FunctionCallNode,
 };
