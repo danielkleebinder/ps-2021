@@ -31,7 +31,7 @@ class Lexer {
       // Hey, we found a number, lets investigate further and check how large this number is
       // and if it spans over multiple characters.
       if (this.#isNumber(char)) {
-        tokens.push(new Token(Tokens.INT, this.#tokenizeNumber()));
+        tokens.push(new Token(Tokens.Integer, this.#tokenizeNumber()));
         continue;
       }
 
@@ -62,8 +62,6 @@ class Lexer {
         tokens.push(new Token(Tokens.Comma));
       } else if (char === "=") {
         tokens.push(new Token(Tokens.Assign));
-      } else if (char === "&") {
-        tokens.push(new Token(Tokens.Concat));
       }
 
       // ... and advance the cursor manually
@@ -119,12 +117,12 @@ class Lexer {
 
     // Check for a syntactically correct arrow ->
     if (char === ">") {
-      return new Token(Tokens.ARROW);
+      return new Token(Tokens.Arrow);
     }
 
     // Might be a negative integer
     if (this.#isNumber(char)) {
-      return new Token(Tokens.NEGATE);
+      return new Token(Tokens.Negate);
     }
 
     // Something went syntactically wrong
@@ -160,7 +158,7 @@ class Lexer {
     if (name in Keywords) {
       return new Token(Keywords[name]);
     } else {
-      return new Token(Tokens.NAME, name);
+      return new Token(Tokens.Name, name);
     }
   }
 }

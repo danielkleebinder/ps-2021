@@ -45,8 +45,14 @@ class ConditionNode {
 }
 
 class RecordNode {
-  constructor(properties = []) {
-    this.properties = properties;
+  constructor(pairsNode) {
+    this.pairsNode = pairsNode;
+  }
+}
+
+class PairsNode {
+  constructor(pairs = []) {
+    this.pairs = pairs;
   }
 }
 
@@ -77,12 +83,6 @@ class FunctionCallNode {
   }
 }
 
-class ConcatNode {
-  constructor(expressions = []) {
-    this.expressions = expressions;
-  }
-}
-
 export {
   RootNode,
   IntegerNode,
@@ -96,5 +96,5 @@ export {
   AccessNode,
   FunctionNode,
   FunctionCallNode,
-  ConcatNode,
+  PairsNode
 };

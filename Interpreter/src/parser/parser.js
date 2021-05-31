@@ -1,15 +1,15 @@
 import ParserError from "./parser-error.js";
-import { Tokens } from "../lexer/token.js";
+import { BasicTokens, Tokens } from "../lexer/token.js";
 import {
   AccessNode,
   AssignNode,
   BinaryOperationNode,
   BinaryOperations,
-  ConcatNode,
   ConditionNode,
   FunctionCallNode,
   FunctionNode,
   IntegerNode,
+  PairsNode,
   RecordNode,
   RootNode,
   UnaryOperationNode,
@@ -21,11 +21,13 @@ class Parser {
   #position = -1;
   #tokens = [];
   #currentToken = null;
+  #functionTable = [];
 
   parse(tokens) {
     this.#position = -1;
     this.#tokens = tokens;
     this.#currentToken = null;
+    this.#functionTable = [];
 
     const statements = [];
     while (this.#hasNext()) {
@@ -55,53 +57,76 @@ class Parser {
   // -- Grammar --
 
   // <expr> ::= <apply>
+  //          | <name> ’->’ <expr>
   #evalExpr() {
+    // <name> ’->’ <expr>
+    this.#next();
+    if (this.#currentToken?.type === Tokens.Name && this.#peekNext()?.type === Tokens.Arrow) {
+      const argumentName = this.#currentToken.value;
+      this.#next();
+      const body = this.#evalExpr();
+      return new FunctionNode(argumentName, body);
+    }
+
+    // <apply>
     return this.#evalApply();
   }
 
   // <apply> ::= <basic>
+  //           | <apply> <basic>
   #evalApply() {
+    // <apply> <basic>
+    if (!BasicTokens.includes(this.#currentToken?.type) && this.#currentToken != null) {
+      return this.#evalApply();
+    }
+
+    // <basic>
     return this.#evalBasic();
   }
 
   // <basic> ::= <integer>
-  //           | <name> (Basic functions)
+  //           | <name>(<basic?>)
   //           | ( <expr> )
-  #evalBasic() {
-    this.#next();
+  //           | { [<pairs>] }
+  #evalBasic(doStep = false) {
+    if (doStep) {
+      this.#next();
+    }
     if (this.#currentToken == null) {
       return null;
     }
     switch (this.#currentToken.type) {
-      case Tokens.INT:
+      case Tokens.Integer:
         return new IntegerNode(this.#currentToken.value);
-      case Tokens.NAME:
-        return this.#evalName();
-      case Tokens.PLUS:
-        const summand1 = this.#evalBasic();
-        const summand2 = this.#evalBasic();
+      case Tokens.Name:
+        const accessName = this.#currentToken.value;
+        if (this.#functionTable[accessName] != null) {
+          return new FunctionCallNode(accessName, this.#evalBasic(true));
+        }
+        return new AccessNode(accessName);
+      case Tokens.Plus:
+        const summand1 = this.#evalBasic(true);
+        const summand2 = this.#evalBasic(true);
         return new BinaryOperationNode(summand1, summand2, BinaryOperations.PLUS);
-      case Tokens.MINUS:
-        const term1 = this.#evalBasic();
-        const term2 = this.#evalBasic();
+      case Tokens.Minus:
+        const term1 = this.#evalBasic(true);
+        const term2 = this.#evalBasic(true);
         return new BinaryOperationNode(term1, term2, BinaryOperations.MINUS);
-      case Tokens.MULT:
-        const factor1 = this.#evalBasic();
-        const factor2 = this.#evalBasic();
+      case Tokens.Mult:
+        const factor1 = this.#evalBasic(true);
+        const factor2 = this.#evalBasic(true);
         return new BinaryOperationNode(factor1, factor2, BinaryOperations.MULT);
-      case Tokens.DIV:
-        const dividend = this.#evalBasic();
-        const divisor = this.#evalBasic();
+      case Tokens.Div:
+        const dividend = this.#evalBasic(true);
+        const divisor = this.#evalBasic(true);
         return new BinaryOperationNode(dividend, divisor, BinaryOperations.DIV);
-      case Tokens.NEGATE:
-        const num = this.#evalBasic();
+      case Tokens.Negate:
+        const num = this.#evalBasic(true);
         return new UnaryOperationNode(num, UnaryOperations.NEGATE);
-      case Tokens.Concat:
-        return this.#evalBasic();
       case Tokens.Cond:
-        const condition = this.#evalBasic();
-        const ifCase = this.#evalBasic();
-        const elseCase = this.#evalBasic();
+        const condition = this.#evalBasic(true);
+        const ifCase = this.#evalBasic(true);
+        const elseCase = this.#evalBasic(true);
         return new ConditionNode(condition, ifCase, elseCase);
       case Tokens.LRPAREN:
         const evaluationResult = this.#evalExpr();
@@ -110,7 +135,7 @@ class Parser {
         }
         return evaluationResult;
       case Tokens.LSPAREN:
-        const record = this.#evalPairs();
+        const record = new RecordNode(this.#evalPairs());
         if (this.#currentToken.type !== Tokens.RSPAREN) {
           throw new ParserError(`Record definition not closed. Symbol was ${JSON.stringify(this.#currentToken)}`);
         }
@@ -122,43 +147,22 @@ class Parser {
   // <pairs> ::= <name> = <expr>
   //           | <pairs> ’,’ <name> = <expr>
   #evalPairs() {
-    const properties = [];
-    do {
+    this.#next();
+    const result = new PairsNode();
+    while (this.#currentToken.type === Tokens.Comma || this.#currentToken.type === Tokens.Name) {
+      if (this.#currentToken.type === Tokens.Comma) {
+        this.#next();
+      }
+      const name = this.#currentToken.value;
       this.#next();
-      properties.push(this.#evalName());
-    } while (this.#hasNext() && this.#next().type === Tokens.Comma);
-    return new RecordNode(properties);
-  }
-
-  #evalName() {
-    const name = this.#currentToken.value;
-
-    switch (this.#peekNext()?.type) {
-      case Tokens.Assign:
-        this.#next();
-        const expr = this.#evalExpr();
-        return new AssignNode(name, expr);
-      case Tokens.ARROW:
-        this.#next();
-        const argumentName = name;
-        const body = this.#evalExpr();
-        return new FunctionNode(argumentName, body);
-      case Tokens.Concat:
-        return new ConcatNode([
-          new AccessNode(name),
-          this.#evalExpr(),
-        ]);
-      case Tokens.LRPAREN:
-        this.#next();
-        const parameter = this.#evalBasic();
-        if (this.#hasNext() && this.#next().type !== Tokens.RRPAREN) {
-          throw new ParserError("Function call not closed");
-        }
-        return new FunctionCallNode(name, parameter);
+      const expr = this.#evalExpr();
+      if (expr instanceof FunctionNode) {
+        this.#functionTable[name] = expr;
+      }
+      result.pairs.push(new AssignNode(name, expr));
+      this.#next();
     }
-
-    // Standalone names are access identifiers
-    return new AccessNode(name);
+    return result;
   }
 }
 

@@ -5,10 +5,10 @@ import {
   AssignNode,
   BinaryOperationNode,
   BinaryOperations,
-  ConcatNode,
   ConditionNode,
   FunctionCallNode,
   IntegerNode,
+  PairsNode,
   RecordNode,
   RootNode,
   UnaryOperationNode,
@@ -61,8 +61,14 @@ class Interpreter {
   }
 
   #handleRecordNode(node) {
-    node.properties.forEach(property => this.#evalNode(property));
+    this.#evalNode(node.pairsNode);
     return "<record create>";
+  }
+
+  #handlePairsNode(node) {
+    node.pairs
+      .forEach(pairNode => this.#evalNode(pairNode));
+    return "<pairs create>";
   }
 
   #handleAssignNode(node) {
@@ -110,12 +116,6 @@ class Interpreter {
     return null;
   }
 
-  #handleConcatNode(node) {
-    return node.expressions
-      .map(expr => this.#evalNode(expr))
-      .flat(1);
-  }
-
   #evalNode(node) {
     if (node instanceof RootNode) {
       return this.#handleRootNode(node);
@@ -137,6 +137,10 @@ class Interpreter {
       return this.#handleRecordNode(node);
     }
 
+    if (node instanceof PairsNode) {
+      return this.#handlePairsNode(node);
+    }
+
     if (node instanceof AssignNode) {
       return this.#handleAssignNode(node);
     }
@@ -151,10 +155,6 @@ class Interpreter {
 
     if (node instanceof FunctionCallNode) {
       return this.#handleFunctionCallNode(node);
-    }
-
-    if (node instanceof ConcatNode) {
-      return this.#handleConcatNode(node);
     }
 
     return node;

@@ -42,3 +42,17 @@ test("should not be able to access out of scope variables", () => {
   expect(result.length).not.toEqual(3);
   expect(result).toEqual(["<record create>", "<record create>"]);
 });
+
+test("should evaluate record functions: { d=x->mult x x, v=d 2 } v", () => {
+  const input = "{ d=x->mult x x, v=d 2 } v";
+  const result = process(input);
+  expect(result.length).toEqual(2);
+  expect(result).toEqual(["<record create>", 4]);
+});
+
+test("should evaluate record functions as far as possible: { a=x->y->add(mult x x)y, b=a 2, c=b 3 } c", ()=>{
+  const input = "{ a=x->y->add(mult x x)y, b=a 2, c=b 3 } c";
+  const result = process(input);
+  expect(result.length).toEqual(2);
+  expect(result).toEqual(["<record create>", 4]);
+})
