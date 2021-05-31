@@ -2,19 +2,34 @@ import Interpreter from "./interpreter/interpreter.js";
 import Lexer from "./lexer/lexer.js";
 import Parser from "./parser/parser.js";
 
-const process = (input) => {
-  console.log("Evaluating:", input);
+
+/**
+ * Run the process function to evaluate some program code.
+ * @param input Program code.
+ * @param debugDetails If true, additional debug details will be print out.
+ * @returns {*}
+ */
+const process = (input, debugDetails = true) => {
+  if (debugDetails) {
+    console.log("Evaluating:", input);
+  }
   let lexer = new Lexer();
   let tokenized = lexer.tokenize(input);
-  console.log("Tokens:", tokenized);
+  if (debugDetails) {
+    console.log("Tokens:", tokenized);
+  }
 
   let parser = new Parser();
   let ast = parser.parse(tokenized);
-  console.log("AST:", ast);
+  if (debugDetails) {
+    console.log("AST:", ast);
+  }
 
   let interpreter = new Interpreter();
   let result = interpreter.interpret(ast);
-  console.log("Result:", result);
+  if (debugDetails) {
+    console.log("Result:", result);
+  }
 
   return result;
 };
@@ -40,5 +55,7 @@ process("{ a = x -> x, b = x -> { res = a(x) } } b(999) res");
 process("{ d=x->mult x x, v=d 2 } v");
 process("{ a=x->y->mult x y, b=a 2, c=b 3 } c");
 process("{ a=x->y->plus(mult x x)y, b=a 2, c=b 3 } c");
+process("{a=x->y->plus(mult x x)y, b=a 2, c=b 3}minus(b 5)c");
+
 
 export default process;

@@ -20,6 +20,12 @@ class Interpreter {
 
   #globalSymbols;
 
+  /**
+   * Interprets the nodes of the given AST. The given node is the root node of
+   * an AST.
+   * @param node Root node of some AST.
+   * @returns {*}
+   */
   interpret(node) {
     this.#globalSymbols = new SymbolRegistry();
     const result = this.#evalNode(node);

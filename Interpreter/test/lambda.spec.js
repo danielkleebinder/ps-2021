@@ -57,9 +57,16 @@ test("should auto rewrite record functions: { a=x->y->mult x y, b=a 2, c=b 3 } c
   expect(result).toEqual(["<record create>", 6]);
 });
 
-test("should evaluate record functions as far as possible: { a=x->y->add(mult x x)y, b=a 2, c=b 3 } c", () => {
-  const input = "{ a=x->y->add(mult x x)y, b=a 2, c=b 3 } c";
+test("should evaluate record functions as far as possible: { a=x->y->plus(mult x x)y, b=a 2, c=b 3 } c", () => {
+  const input = "{ a=x->y->plus(mult x x)y, b=a 2, c=b 3 } c";
   const result = process(input);
   expect(result.length).toEqual(2);
-  expect(result).toEqual(["<record create>", 4]);
+  expect(result).toEqual(["<record create>", 7]);
+});
+
+test("should apply environment to named expression: {a=x->y->plus(mult x x)y, b=a 2, c=b 3}minus(b 5)c", () => {
+  const input = "{a=x->y->plus(mult x x)y, b=a 2, c=b 3}minus(b 5)c";
+  const result = process(input);
+  expect(result.length).toEqual(2);
+  expect(result).toEqual(["<record create>", 2]);
 });

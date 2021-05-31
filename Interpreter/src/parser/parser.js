@@ -17,6 +17,10 @@ import {
 } from "./nodes.js";
 import { inlineFunctionArgument } from "../optimizer/optimizer.js";
 
+
+/**
+ * The parser uses the alphabet of defined tokens to create an AST.
+ */
 class Parser {
 
   #position = -1;
@@ -24,6 +28,11 @@ class Parser {
   #currentToken = null;
   #functionTable = [];
 
+  /**
+   * Parses the given tokens and returns an abstract syntax tree as result.
+   * @param tokens Tokens.
+   * @returns {RootNode}
+   */
   parse(tokens) {
     this.#position = -1;
     this.#tokens = tokens;

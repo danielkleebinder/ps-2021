@@ -1,15 +1,30 @@
+/*************************************************************************/
+/* Defines the nodes of the abstract syntax tree                         */
+
+/*************************************************************************/
+
+/**
+ * The root node contains a bunch of statements at the programs root level.
+ */
 class RootNode {
   constructor(statements = []) {
     this.statements = statements;
   }
 }
 
+/**
+ * Single integer value.
+ */
 class IntegerNode {
   constructor(value) {
     this.value = value;
   }
 }
 
+/**
+ * Binary operations consist of two operands and an operation that has
+ * to be evaluated.
+ */
 class BinaryOperationNode {
   constructor(leftNode, rightNode, op) {
     this.leftNode = leftNode;
@@ -96,5 +111,5 @@ export {
   AccessNode,
   FunctionNode,
   FunctionCallNode,
-  PairsNode
+  PairsNode,
 };
