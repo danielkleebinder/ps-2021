@@ -70,3 +70,10 @@ test("should apply environment to named expression: {a=x->y->plus(mult x x)y, b=
   expect(result.length).toEqual(2);
   expect(result).toEqual(["<record create>", 2]);
 });
+
+test("should allow look ahead of function definition: {a=x->{head=a head}}a", () => {
+  const input = "{a=x->{head=a head}}a";
+  const result = process(input);
+  expect(result.length).toEqual(2);
+  expect(result).toEqual(["<record create>", "<record create>"]);
+});

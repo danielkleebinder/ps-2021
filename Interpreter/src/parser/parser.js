@@ -26,7 +26,9 @@ class Parser {
   #position = -1;
   #tokens = [];
   #currentToken = null;
+
   #functionTable = [];
+  #functionLookAheadTable = [];
 
   /**
    * Parses the given tokens and returns an abstract syntax tree as result.
@@ -37,7 +39,9 @@ class Parser {
     this.#position = -1;
     this.#tokens = tokens;
     this.#currentToken = null;
+
     this.#functionTable = [];
+    this.#functionLookAheadTable = [];
 
     const statements = [];
     while (this.#hasNext()) {
@@ -46,6 +50,10 @@ class Parser {
     return new RootNode(statements);
   }
 
+  /**
+   * Steps to the next token.
+   * @returns {Token}
+   */
   #next() {
     if (this.#hasNext()) {
       this.#position += 1;
@@ -56,8 +64,13 @@ class Parser {
     return this.#currentToken;
   }
 
-  #peekNext() {
-    return this.#tokens[this.#position + 1];
+  /**
+   * Peeks the next token at position n.
+   * @param n Next token position (defaults to 1).
+   * @returns {Token}
+   */
+  #peekNext(n = 1) {
+    return this.#tokens[this.#position + n];
   }
 
   #hasNext() {
@@ -110,7 +123,7 @@ class Parser {
         return new IntegerNode(this.#currentToken.value);
       case Tokens.Name:
         const accessName = this.#currentToken.value;
-        if (this.#functionTable[accessName] != null) {
+        if (this.#functionLookAheadTable[accessName]) {
           return new FunctionCallNode(accessName, this.#evalBasic(true));
         }
         return new AccessNode(accessName);
@@ -147,7 +160,7 @@ class Parser {
       case Tokens.LSPAREN:
         const record = new RecordNode(this.#evalPairs());
         if (this.#currentToken.type !== Tokens.RSPAREN) {
-          throw new ParserError(`Record definition not closed. Symbol was ${JSON.stringify(this.#currentToken)}`);
+          throw new ParserError(`Record definition not closed at ${this.#position}. Symbol was ${JSON.stringify(this.#currentToken)}`);
         }
         return record;
     }
@@ -166,6 +179,13 @@ class Parser {
       const name = this.#currentToken.value;
       this.#next();
 
+      // A function look ahead table is used to keep track of function definitions
+      // and allow for functions to call themselves.
+      if (this.#peekNext()?.type === Tokens.Name && this.#peekNext(2)?.type === Tokens.Arrow) {
+        console.log(name);
+        this.#functionLookAheadTable[name] = true;
+      }
+
       let expr = this.#evalExpr();
 
       // Directly rewrite and inline functions if possible:
@@ -183,6 +203,7 @@ class Parser {
       // for function rewrites and function calls later.
       if (expr instanceof FunctionNode) {
         this.#functionTable[name] = expr;
+        this.#functionLookAheadTable[name] = true;
       }
 
       result.pairs.push(new AssignNode(name, expr));

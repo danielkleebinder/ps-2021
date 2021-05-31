@@ -56,6 +56,7 @@ process("{ d=x->mult x x, v=d 2 } v");
 process("{ a=x->y->mult x y, b=a 2, c=b 3 } c");
 process("{ a=x->y->plus(mult x x)y, b=a 2, c=b 3 } c");
 process("{a=x->y->plus(mult x x)y, b=a 2, c=b 3}minus(b 5)c");
+process("{a=x->{head=a head}}a");
 
 
 export default process;
