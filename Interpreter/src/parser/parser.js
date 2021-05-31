@@ -15,6 +15,7 @@ import {
   UnaryOperationNode,
   UnaryOperations,
 } from "./nodes.js";
+import { inlineFunctionArgument } from "../optimizer/optimizer.js";
 
 class Parser {
 
@@ -155,10 +156,26 @@ class Parser {
       }
       const name = this.#currentToken.value;
       this.#next();
-      const expr = this.#evalExpr();
+
+      let expr = this.#evalExpr();
+
+      // Directly rewrite and inline functions if possible:
+      //   In general, expressions are always executed as far as possible.
+      //   For example, in {a=x->y->add(mult x x)y, b=a 2, c=b 3} the value
+      //   of a is the whole function, the value of b is y->add(mult 2 2)y
+      //   (or y->add 4 y if you want to apply optimizations), and the value
+      //   of c is 7.
+      if (expr instanceof FunctionCallNode && this.#functionTable[expr.name] != null) {
+        const fn = this.#functionTable[expr.name];
+        expr = inlineFunctionArgument(fn, expr.argument);
+      }
+
+      // It's a function definition. Place it inside the function table to find it
+      // for function rewrites and function calls later.
       if (expr instanceof FunctionNode) {
         this.#functionTable[name] = expr;
       }
+
       result.pairs.push(new AssignNode(name, expr));
       this.#next();
     }

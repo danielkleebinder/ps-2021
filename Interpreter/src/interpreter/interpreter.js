@@ -85,8 +85,8 @@ class Interpreter {
 
   #handleFunctionCallNode(node) {
     const { name, argument } = node;
-    const fun = this.#globalSymbols.get(name);
-    if (fun == null) {
+    const fn = this.#globalSymbols.get(name);
+    if (fn == null) {
       throw new InterpreterError(`Function with name "${name}" not declared`);
     }
 
@@ -97,8 +97,8 @@ class Interpreter {
 
     // Create a copy of the previous frame and use a new symbol registry for this function call.
     this.#globalSymbols = new SymbolRegistry(this.#globalSymbols);
-    this.#globalSymbols.set(fun.argument, evaluatedParameter);
-    const result = this.#evalNode(fun.body);
+    this.#globalSymbols.set(fn.argument, evaluatedParameter);
+    const result = this.#evalNode(fn.body);
 
     // Restore the parent scope state.
     this.#globalSymbols = this.#globalSymbols.parent;

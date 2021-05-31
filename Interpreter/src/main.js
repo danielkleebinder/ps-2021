@@ -38,6 +38,7 @@ process("{ a = x -> x, b = x -> (mult(plus 1 x) a 5) } b 1");
 process("{ a = x -> x, b = x -> cond x 2 3 } b(0)");
 process("{ a = x -> x, b = x -> { res = a(x) } } b(999) res");
 process("{ d=x->mult x x, v=d 2 } v");
-process("{ a=x->y->add(mult x x)y, b=a 2, c=b 3 } c");
+process("{ a=x->y->mult x y, b=a 2, c=b 3 } c");
+process("{ a=x->y->plus(mult x x)y, b=a 2, c=b 3 } c");
 
 export default process;

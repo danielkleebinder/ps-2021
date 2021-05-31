@@ -50,9 +50,16 @@ test("should evaluate record functions: { d=x->mult x x, v=d 2 } v", () => {
   expect(result).toEqual(["<record create>", 4]);
 });
 
-test("should evaluate record functions as far as possible: { a=x->y->add(mult x x)y, b=a 2, c=b 3 } c", ()=>{
+test("should auto rewrite record functions: { a=x->y->mult x y, b=a 2, c=b 3 } c", () => {
+  const input = "{ a=x->y->mult x y, b=a 2, c=b 3 } c";
+  const result = process(input);
+  expect(result.length).toEqual(2);
+  expect(result).toEqual(["<record create>", 6]);
+});
+
+test("should evaluate record functions as far as possible: { a=x->y->add(mult x x)y, b=a 2, c=b 3 } c", () => {
   const input = "{ a=x->y->add(mult x x)y, b=a 2, c=b 3 } c";
   const result = process(input);
   expect(result.length).toEqual(2);
   expect(result).toEqual(["<record create>", 4]);
-})
+});
