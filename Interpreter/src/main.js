@@ -38,5 +38,8 @@ process("{}");
 process("{ a = x -> x, b = x -> (mult(plus 1 x) a(5)) } b(1)");
 process("{ a = x -> x, b = x -> cond x 2 3 } b(0)");
 process("{ a = x -> x, b = x -> { res = a(x) } } b(999) res");
+process("cond 1 hello world");
+process("2&3&1");
+process("{ a = 1, b = 2, c = a&b&a } c");
 
 export default process;

@@ -77,6 +77,12 @@ class FunctionCallNode {
   }
 }
 
+class ConcatNode {
+  constructor(expressions = []) {
+    this.expressions = expressions;
+  }
+}
+
 export {
   RootNode,
   IntegerNode,
@@ -90,4 +96,5 @@ export {
   AccessNode,
   FunctionNode,
   FunctionCallNode,
+  ConcatNode,
 };

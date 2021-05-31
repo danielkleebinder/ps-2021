@@ -5,6 +5,7 @@ import {
   AssignNode,
   BinaryOperationNode,
   BinaryOperations,
+  ConcatNode,
   ConditionNode,
   FunctionCallNode,
   FunctionNode,
@@ -95,6 +96,8 @@ class Parser {
       case Tokens.NEGATE:
         const num = this.#evalBasic();
         return new UnaryOperationNode(num, UnaryOperations.NEGATE);
+      case Tokens.Concat:
+        return this.#evalBasic();
       case Tokens.Cond:
         const condition = this.#evalBasic();
         const ifCase = this.#evalBasic();
@@ -140,6 +143,11 @@ class Parser {
         const argumentName = name;
         const body = this.#evalExpr();
         return new FunctionNode(argumentName, body);
+      case Tokens.Concat:
+        return new ConcatNode([
+          new AccessNode(name),
+          this.#evalExpr(),
+        ]);
       case Tokens.LRPAREN:
         this.#next();
         const parameter = this.#evalBasic();

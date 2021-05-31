@@ -5,6 +5,7 @@ import {
   AssignNode,
   BinaryOperationNode,
   BinaryOperations,
+  ConcatNode,
   ConditionNode,
   FunctionCallNode,
   IntegerNode,
@@ -109,6 +110,12 @@ class Interpreter {
     return null;
   }
 
+  #handleConcatNode(node) {
+    return node.expressions
+      .map(expr => this.#evalNode(expr))
+      .flat(1);
+  }
+
   #evalNode(node) {
     if (node instanceof RootNode) {
       return this.#handleRootNode(node);
@@ -144,6 +151,10 @@ class Interpreter {
 
     if (node instanceof FunctionCallNode) {
       return this.#handleFunctionCallNode(node);
+    }
+
+    if (node instanceof ConcatNode) {
+      return this.#handleConcatNode(node);
     }
 
     return node;
