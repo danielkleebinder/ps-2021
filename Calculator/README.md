@@ -1,5 +1,21 @@
 # Calculator
 
+## Contributors
+The following list shows all contributors (people who committed code) and on which package they worked.
+
+| Package                | Contributor         |
+|------------------------|---------------------|
+| Architecture & Parser  | Daniel Kleebinder   |
+| Number & Decimals      | Daniel Kleebinder   |
+| Lists                  | Daniel Kleebinder   |
+| Registers              | Christian Schweiger |
+| Arithmetic Operators   | Christian Schweiger |
+| Logical Operators      | Christian Schweiger |
+| Stack Operators        | Daniel Kleebinder   |
+| List Operators         | Daniel Kleebinder   |
+| Testing                | Daniel Kleebinder   |
+| Code Reviews           | Both                |
+
 ## Testing
 The calculator comes with out-of-the box functionality which is stored in different registers.
 
