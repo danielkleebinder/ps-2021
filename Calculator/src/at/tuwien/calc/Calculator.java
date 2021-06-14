@@ -4,28 +4,26 @@ import at.tuwien.calc.context.CalculatorContext;
 import at.tuwien.calc.interpreter.Interpreter;
 import at.tuwien.calc.interpreter.InterpreterException;
 import at.tuwien.calc.model.IDataEntry;
+import at.tuwien.calc.stream.IInputStream;
 import at.tuwien.calc.stream.IOutputStream;
 import at.tuwien.calc.stream.QueueCommandStream;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class Calculator {
 
-    BufferedReader inputStream;
+    IInputStream inputStream;
     IOutputStream outputStream;
 
     Interpreter interpreter;
     CalculatorContext context;
 
-    public Calculator(InputStream inputStream, IOutputStream outputStream) {
-        this.interpreter = new Interpreter();
+    public Calculator(IInputStream inputStream, IOutputStream outputStream) {
+        this.inputStream = inputStream;
         this.outputStream = outputStream;
-        this.inputStream = new BufferedReader(new InputStreamReader(inputStream));
-        this.context = new CalculatorContext(new QueueCommandStream(), outputStream);
 
+        this.interpreter = new Interpreter();
+        this.context = new CalculatorContext(new QueueCommandStream(), outputStream);
         this.interpreter.setExtensiveLogging(false);
     }
 

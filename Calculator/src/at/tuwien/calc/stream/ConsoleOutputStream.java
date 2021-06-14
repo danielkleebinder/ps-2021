@@ -4,7 +4,7 @@ package at.tuwien.calc.stream;
 /**
  * Writes strings to the console.
  */
-public class ConsoleOutputStream implements IOutputStream {
+public final class ConsoleOutputStream implements IOutputStream {
 
     @Override
     public void write(String str) {

@@ -1,1 +1,3 @@
 Calculator/.idea/sonarlint/*
+Interpreter/.idea
+Interpreter/node_modules
