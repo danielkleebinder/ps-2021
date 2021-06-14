@@ -132,7 +132,7 @@ public class Interpreter {
         return context;
     }
 
-    public boolean isExtensiveLogging() {
+    public boolean isExtensiveLoggingEnabled() {
         return extensiveLogging;
     }
 
