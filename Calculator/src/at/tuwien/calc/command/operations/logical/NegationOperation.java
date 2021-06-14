@@ -8,6 +8,10 @@ import at.tuwien.calc.model.ListDataEntry;
 
 import java.util.regex.Pattern;
 
+
+/**
+ * Negates the top value on the data stack.
+ */
 @ExecutionMode
 public class NegationOperation implements ICommand {
 

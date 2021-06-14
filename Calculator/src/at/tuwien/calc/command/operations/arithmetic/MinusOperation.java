@@ -7,6 +7,10 @@ import at.tuwien.calc.model.DoubleDataEntry;
 
 import java.util.regex.Pattern;
 
+
+/**
+ * Performs an arithmetic subtraction.
+ */
 @ExecutionMode
 public class MinusOperation implements ICommand {
     private static final Pattern pattern = Pattern.compile("\\-");

@@ -9,6 +9,10 @@ import at.tuwien.calc.model.ListDataEntry;
 
 import java.util.regex.Pattern;
 
+
+/**
+ * Performs a logical AND operation for the top two entry on the data stack.
+ */
 @ExecutionMode
 public class AndOperation implements ICommand {
     private static final Pattern pattern = Pattern.compile("&");

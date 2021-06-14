@@ -8,6 +8,11 @@ import at.tuwien.calc.model.ListDataEntry;
 
 import java.util.regex.Pattern;
 
+
+/**
+ * Evaluates the top entry on the data stack and pushes
+ * either TRUE (=1) or FALSE (=0) onto the data stack.
+ */
 @ExecutionMode
 public class CheckOperation implements ICommand {
 

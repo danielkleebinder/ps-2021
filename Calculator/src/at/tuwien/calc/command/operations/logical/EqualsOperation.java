@@ -7,6 +7,12 @@ import at.tuwien.calc.model.DoubleDataEntry;
 
 import java.util.regex.Pattern;
 
+
+/**
+ * Evaluates the top two entries on the data stack and pushes
+ * either TRUE (=1) if the values are the same or FALSE (=0)
+ * if they are different onto the data stack.
+ */
 @ExecutionMode
 public class EqualsOperation implements ICommand {
 

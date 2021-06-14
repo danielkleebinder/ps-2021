@@ -8,6 +8,10 @@ import at.tuwien.calc.model.ListDataEntry;
 
 import java.util.regex.Pattern;
 
+/**
+ * Performs an arithmetic division. An empty list is pushed to the stack
+ * if the divisor is zero to prevent arithmetic exceptions.
+ */
 @ExecutionMode
 public class DivisonOperation implements ICommand {
 

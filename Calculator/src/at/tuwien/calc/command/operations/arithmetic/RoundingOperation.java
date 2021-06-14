@@ -8,6 +8,10 @@ import at.tuwien.calc.model.ListDataEntry;
 
 import java.util.regex.Pattern;
 
+
+/**
+ * Rounds the top entry on the data stack and pushes it back on the stack.
+ */
 @ExecutionMode
 public class RoundingOperation implements ICommand {
 

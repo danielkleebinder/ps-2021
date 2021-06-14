@@ -8,6 +8,11 @@ import at.tuwien.calc.model.ListDataEntry;
 
 import java.util.regex.Pattern;
 
+
+/**
+ * Checks if the second top value on the data stack is
+ * larger than the top value.
+ */
 @ExecutionMode
 public class MoreThanOperation implements ICommand {
     private static final Pattern pattern = Pattern.compile(">");

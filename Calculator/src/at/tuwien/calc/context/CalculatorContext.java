@@ -112,8 +112,8 @@ public class CalculatorContext implements IContext {
     public String toString() {
         return "CalculatorContext{" +
                 "operationMode=" + operationMode +
-                ", register=" + register +
                 ", dataStack=" + dataStack +
+                ", register=" + register +
                 '}';
     }
 }

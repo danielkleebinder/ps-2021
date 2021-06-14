@@ -6,6 +6,11 @@ import at.tuwien.calc.context.IContext;
 
 import java.util.regex.Pattern;
 
+
+/**
+ * Stores the top value on the data stack in a given register
+ * with name from A to Z.
+ */
 @ExecutionMode
 public class StoreOperation implements ICommand {
 

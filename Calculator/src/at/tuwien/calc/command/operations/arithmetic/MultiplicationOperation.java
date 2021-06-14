@@ -7,6 +7,10 @@ import at.tuwien.calc.model.DoubleDataEntry;
 
 import java.util.regex.Pattern;
 
+
+/**
+ * Performs an arithmetic multiplication.
+ */
 @ExecutionMode
 public class MultiplicationOperation implements ICommand {
 
