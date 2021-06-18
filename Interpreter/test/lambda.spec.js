@@ -77,3 +77,20 @@ test("should allow look ahead of function definition: {a=x->{head=a head}}a", ()
   expect(result.length).toEqual(2);
   expect(result).toEqual(["<record create>", "<record create>"]);
 });
+
+test("should be substituted as far as possible", () => {
+  const input="{ a = x -> mult x x, b = y -> a y } b 10";
+  const result = process(input);
+  expect(result.length).toEqual(2);
+  expect(result[0]).toEqual("<record create>");
+  expect(result[1]).toEqual(100);
+});
+
+
+// test("should be substituted as far as possible", () => {
+//   const input="{append = x->y->cond x {head=x head, tail=append(x tail)y} y, gen = x->cond x (append(gen(minus x 1)) {head=x, tail={}}) {}} gen 3";
+//   const result = process(input);
+//   expect(result.length).toEqual(2);
+//   expect(result[0]).toEqual("<record create>");
+//   expect(result[1]).toEqual(100);
+// });

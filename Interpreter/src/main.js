@@ -34,7 +34,6 @@ const process = (input, debugDetails = true) => {
   return result;
 };
 
-// let input = "1 2 plus -> ( ) { }";
 process("plus 1 2");
 process("minus 2 -3");
 process("plus(mult 2 2)3");
@@ -57,6 +56,6 @@ process("{ a=x->y->mult x y, b=a 2, c=b 3 } c");
 process("{ a=x->y->plus(mult x x)y, b=a 2, c=b 3 } c");
 process("{a=x->y->plus(mult x x)y, b=a 2, c=b 3}minus(b 5)c");
 process("{a=x->{head=a head}}a");
-
+process("{ a = x -> mult x x, b = y -> a y } b 10");
 
 export default process;

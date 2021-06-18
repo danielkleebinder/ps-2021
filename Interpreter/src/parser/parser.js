@@ -182,7 +182,6 @@ class Parser {
       // A function look ahead table is used to keep track of function definitions
       // and allow for functions to call themselves.
       if (this.#peekNext()?.type === Tokens.Name && this.#peekNext(2)?.type === Tokens.Arrow) {
-        console.log(name);
         this.#functionLookAheadTable[name] = true;
       }
 
@@ -202,6 +201,12 @@ class Parser {
       // It's a function definition. Place it inside the function table to find it
       // for function rewrites and function calls later.
       if (expr instanceof FunctionNode) {
+        // If expr is a function call then we inline the function as much as possible
+        if (expr.body instanceof FunctionCallNode) {
+          const fn = this.#functionTable[expr.body.name];
+          var inlineBody = inlineFunctionArgument(fn, new AccessNode(expr.argument));
+          expr = new FunctionNode(expr.argument, inlineBody);
+        }
         this.#functionTable[name] = expr;
         this.#functionLookAheadTable[name] = true;
       }
