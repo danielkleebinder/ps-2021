@@ -17,12 +17,10 @@ import {
 } from "./nodes.js";
 import { inlineFunctionArgument } from "../optimizer/optimizer.js";
 
-
 /**
  * The parser uses the alphabet of defined tokens to create an AST.
  */
 class Parser {
-
   #position = -1;
   #tokens = [];
   #currentToken = null;
@@ -84,7 +82,10 @@ class Parser {
   #evalExpr() {
     // <name> ’->’ <expr>
     this.#next();
-    if (this.#currentToken?.type === Tokens.Name && this.#peekNext()?.type === Tokens.Arrow) {
+    if (
+      this.#currentToken?.type === Tokens.Name &&
+      this.#peekNext()?.type === Tokens.Arrow
+    ) {
       const argumentName = this.#currentToken.value;
       this.#next();
       const body = this.#evalExpr();
@@ -99,16 +100,22 @@ class Parser {
   //           | <apply> <basic>
   #evalApply() {
     // <apply> <basic>
-    if (!BasicTokens.includes(this.#currentToken?.type) && this.#currentToken != null) {
-      return this.#evalApply();
+    if (this.#currentToken?.type === Tokens.Name) {
+      const accessName = this.#currentToken.value;
+      if (this.#functionLookAheadTable[accessName]) {
+        return new FunctionCallNode(accessName, this.#evalBasic(true))
+      }
     }
+    // if (!BasicTokens.includes(this.#currentToken?.type) && this.#currentToken != null) {
+    //   return this.#evalApply();
+    // }
 
     // <basic>
     return this.#evalBasic();
   }
 
   // <basic> ::= <integer>
-  //           | <name>(<basic?>)
+  //           | <name>
   //           | ( <expr> )
   //           | { [<pairs>] }
   #evalBasic(doStep = false) {
@@ -130,7 +137,11 @@ class Parser {
       case Tokens.Plus:
         const summand1 = this.#evalBasic(true);
         const summand2 = this.#evalBasic(true);
-        return new BinaryOperationNode(summand1, summand2, BinaryOperations.PLUS);
+        return new BinaryOperationNode(
+          summand1,
+          summand2,
+          BinaryOperations.PLUS
+        );
       case Tokens.Minus:
         const term1 = this.#evalBasic(true);
         const term2 = this.#evalBasic(true);
@@ -154,65 +165,94 @@ class Parser {
       case Tokens.LRPAREN:
         const evaluationResult = this.#evalExpr();
         if (!this.#hasNext() || this.#next().type !== Tokens.RRPAREN) {
-          throw new ParserError("No closing parenthesis found");
+          throw new ParserError(`No closing parenthesis at position ${this.#position} found`);
         }
         return evaluationResult;
       case Tokens.LSPAREN:
-        const record = new RecordNode(this.#evalPairs());
+        const record = new RecordNode(this.#evalPairs(true));
         if (this.#currentToken.type !== Tokens.RSPAREN) {
-          throw new ParserError(`Record definition not closed at ${this.#position}. Symbol was ${JSON.stringify(this.#currentToken)}`);
+          throw new ParserError(
+            `Record definition not closed at ${
+              this.#position
+            }. Symbol was ${JSON.stringify(this.#currentToken)}`
+          );
         }
         return record;
     }
-    throw new ParserError(`Evaluation of ${JSON.stringify(this.#currentToken)} is not possible`);
+    throw new ParserError(
+      `Evaluation of ${JSON.stringify(this.#currentToken)} is not possible`
+    );
   }
 
   // <pairs> ::= <name> = <expr>
   //           | <pairs> ’,’ <name> = <expr>
-  #evalPairs() {
-    this.#next();
+  #evalPairs(goStep = false) {
+    if (goStep) {
+      this.#next();
+    }
     const result = new PairsNode();
-    while (this.#currentToken.type === Tokens.Comma || this.#currentToken.type === Tokens.Name) {
-      if (this.#currentToken.type === Tokens.Comma) {
-        this.#next();
+
+    if (this.#currentToken.type === Tokens.RSPAREN) { // Empty List
+      return result;
+    }
+
+
+    const name = this.#currentToken.value;
+
+    if (this.#next().type !== Tokens.Assign) {
+      throw new ParserError(
+        `Syntax Error at position ${
+          this.#position
+        }. Expected symbol '=' but was ${JSON.stringify(this.#currentToken)}`
+      );
+    }
+
+    // A function look ahead table is used to keep track of function definitions
+    // and allow for functions to call themselves.
+    if (
+      this.#peekNext()?.type === Tokens.Name &&
+      this.#peekNext(2)?.type === Tokens.Arrow
+    ) {
+      this.#functionLookAheadTable[name] = true;
+    }
+
+    let expr = this.#evalExpr();
+
+    // Directly rewrite and inline functions if possible:
+    //   In general, expressions are always executed as far as possible.
+    //   For example, in {a=x->y->add(mult x x)y, b=a 2, c=b 3} the value
+    //   of a is the whole function, the value of b is y->add(mult 2 2)y
+    //   (or y->add 4 y if you want to apply optimizations), and the value
+    //   of c is 7.
+    if (
+      expr instanceof FunctionCallNode &&
+      this.#functionTable[expr.name] != null
+    ) {
+      const fn = this.#functionTable[expr.name];
+      expr = inlineFunctionArgument(fn, expr.argument);
+    }
+
+    // It's a function definition. Place it inside the function table to find it
+    // for function rewrites and function calls later.
+    if (expr instanceof FunctionNode) {
+      // If expr is a function call then we inline the function as much as possible
+      if (expr.body instanceof FunctionCallNode) {
+        const fn = this.#functionTable[expr.body.name];
+        var inlineBody = inlineFunctionArgument(
+          fn,
+          new AccessNode(expr.argument)
+        );
+        expr = new FunctionNode(expr.argument, inlineBody);
       }
-      const name = this.#currentToken.value;
+      this.#functionTable[name] = expr;
+      this.#functionLookAheadTable[name] = true;
+    }
+
+    result.pairs.push(new AssignNode(name, expr));
+
+    if (this.#next().type === Tokens.Comma) {
       this.#next();
-
-      // A function look ahead table is used to keep track of function definitions
-      // and allow for functions to call themselves.
-      if (this.#peekNext()?.type === Tokens.Name && this.#peekNext(2)?.type === Tokens.Arrow) {
-        this.#functionLookAheadTable[name] = true;
-      }
-
-      let expr = this.#evalExpr();
-
-      // Directly rewrite and inline functions if possible:
-      //   In general, expressions are always executed as far as possible.
-      //   For example, in {a=x->y->add(mult x x)y, b=a 2, c=b 3} the value
-      //   of a is the whole function, the value of b is y->add(mult 2 2)y
-      //   (or y->add 4 y if you want to apply optimizations), and the value
-      //   of c is 7.
-      if (expr instanceof FunctionCallNode && this.#functionTable[expr.name] != null) {
-        const fn = this.#functionTable[expr.name];
-        expr = inlineFunctionArgument(fn, expr.argument);
-      }
-
-      // It's a function definition. Place it inside the function table to find it
-      // for function rewrites and function calls later.
-      if (expr instanceof FunctionNode) {
-        // If expr is a function call then we inline the function as much as possible
-        if (expr.body instanceof FunctionCallNode) {
-          const fn = this.#functionTable[expr.body.name];
-          var inlineBody = inlineFunctionArgument(fn, new AccessNode(expr.argument));
-          expr = new FunctionNode(expr.argument, inlineBody);
-        }
-        this.#functionTable[name] = expr;
-        this.#functionLookAheadTable[name] = true;
-      }
-
-      result.pairs.push(new AssignNode(name, expr));
-      this.#next();
+      result.pairs = result.pairs.concat(this.#evalPairs().pairs);
     }
     return result;
   }

@@ -48,7 +48,7 @@ process("{a = x -> x} a 3");
 process("{a = x -> mult(plus 1 x) 3} a 3");
 process("{ a = x -> x } a 3");
 process("{}");
-process("{ a = x -> x, b = x -> (mult(plus 1 x) a 5) } b 1");
+process("{ a = x -> x, b = x -> mult(plus 1 x) a(5) } b 2");
 process("{ a = x -> x, b = x -> cond x 2 3 } b(0)");
 process("{ a = x -> x, b = x -> { res = a(x) } } b(999) res");
 process("{ d=x->mult x x, v=d 2 } v");
@@ -57,5 +57,7 @@ process("{ a=x->y->plus(mult x x)y, b=a 2, c=b 3 } c");
 process("{a=x->y->plus(mult x x)y, b=a 2, c=b 3}minus(b 5)c");
 process("{a=x->{head=a head}}a");
 process("{ a = x -> mult x x, b = y -> a y } b 10");
+
+// process("{append = x->y->cond x {head=x head, tail=append(x tail)y} y, gen = x->cond x (append(gen(minus x 1)) {head=x, tail={}}) {}} gen 3");
 
 export default process;
