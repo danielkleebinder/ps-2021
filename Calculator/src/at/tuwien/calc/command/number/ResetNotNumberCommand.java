@@ -24,6 +24,7 @@ public class ResetNotNumberCommand implements ICommand {
 
     @Override
     public void apply(IContext context, Character command) {
-        context.resetOperationMode();
+        context.getCommandStream().unshift(command);
+        context.switchToExecutionMode();
     }
 }

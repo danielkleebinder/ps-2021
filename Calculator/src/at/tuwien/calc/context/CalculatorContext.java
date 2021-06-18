@@ -25,8 +25,9 @@ public class CalculatorContext implements IContext {
 
     private int operationMode = 0;
 
-    private ICommandStream commandStream;
-    private IOutputStream outputStream;
+    // TODO: Is this command stream really necessary? Maybe same as from the lexer?
+    private final ICommandStream commandStream;
+    private final IOutputStream outputStream;
 
     public CalculatorContext(ICommandStream commandStream, IOutputStream outputStream) {
         this.commandStream = commandStream;
@@ -71,7 +72,7 @@ public class CalculatorContext implements IContext {
 
     @Override
     public <T extends IDataEntry<?>> T peekDataStack() {
-        if (dataStack.empty()) {
+        if (dataStack.isEmpty()) {
             return null;
         }
         return (T) dataStack.peek();
@@ -84,7 +85,7 @@ public class CalculatorContext implements IContext {
 
     @Override
     public void removeDataStackValueAt(int index) {
-        dataStack.remove(getDataStackSize() - index - 1);
+        dataStack.remove(index);
     }
 
     @Override
@@ -111,8 +112,8 @@ public class CalculatorContext implements IContext {
     public String toString() {
         return "CalculatorContext{" +
                 "operationMode=" + operationMode +
-                ", register=" + register +
                 ", dataStack=" + dataStack +
+                ", register=" + register +
                 '}';
     }
 }

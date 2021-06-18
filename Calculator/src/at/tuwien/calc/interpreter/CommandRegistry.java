@@ -7,8 +7,11 @@ import at.tuwien.calc.command.number.DecimalPlaceCommand;
 import at.tuwien.calc.command.number.DigitCommand;
 import at.tuwien.calc.command.number.DotCommand;
 import at.tuwien.calc.command.number.ResetNotNumberCommand;
+import at.tuwien.calc.command.operations.arithmetic.*;
+import at.tuwien.calc.command.operations.logical.*;
 import at.tuwien.calc.command.operator.*;
-import at.tuwien.calc.command.register.PushToDataStackCommand;
+import at.tuwien.calc.command.register.ReadOperation;
+import at.tuwien.calc.command.register.StoreOperation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +42,22 @@ public class CommandRegistry {
             add(new DeleteCommand());
             add(new SquareRootCommand());
             add(new WriteOutputCommand());
-            add(new PushToDataStackCommand());
             add(new ExitCommand());
+            add(new PlusOperation());
+            add(new MinusOperation());
+            add(new StoreOperation());
+            add(new ReadOperation());
+            add(new EqualsOperation());
+            add(new LessThanOperation());
+            add(new MoreThanOperation());
+            add(new AndOperation());
+            add(new OrOperation());
+            add(new CheckOperation());
+            add(new DivisonOperation());
+            add(new MultiplicationOperation());
+            add(new NegationOperation());
+            add(new RoundingOperation());
+            add(new ReadInputCommand());
         }
     };
 

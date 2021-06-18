@@ -33,6 +33,6 @@ public class SquareRootCommand implements ICommand {
             // There is no effect if v is not a positive number.
             return;
         }
-        context.pushToDataStack(new DoubleDataEntry(entry * entry));
+        context.pushToDataStack(new DoubleDataEntry(Math.sqrt(entry)));
     }
 }

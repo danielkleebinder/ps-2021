@@ -8,7 +8,7 @@ package at.tuwien.calc.model;
  *
  * @param <T> Generic data type. Can be anything.
  */
-public interface IDataEntry<T> extends Cloneable {
+public interface IDataEntry<T> extends Comparable<IDataEntry>, Cloneable {
 
     /**
      * Returns the value of this data entry.

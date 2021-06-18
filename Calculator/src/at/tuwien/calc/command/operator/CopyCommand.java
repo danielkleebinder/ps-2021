@@ -4,6 +4,7 @@ import at.tuwien.calc.command.ICommand;
 import at.tuwien.calc.command.annotation.ExecutionMode;
 import at.tuwien.calc.context.IContext;
 import at.tuwien.calc.model.DoubleDataEntry;
+import at.tuwien.calc.model.IDataEntry;
 
 import java.util.regex.Pattern;
 
@@ -31,14 +32,16 @@ public class CopyCommand implements ICommand {
             return;
         }
 
+        var stackSize = context.getDataStackSize();
         var v = (Double) context.peekDataStack().get();
         var n = (int) Math.round(v);
-        if (n < 0 || n >= context.getDataStackSize()) {
-            // There is no effect if v is not a number or n is not in the appropriate range.
+        if (n <= 0 || n >= stackSize + 1) {
+            // There is no effect if v is not a number or n is not in the appropriate range
             return;
         }
 
+        IDataEntry copy = context.getDataStackValueAt(stackSize - n).copy();
         context.popFromDataStack();
-        context.pushToDataStack(context.getDataStackValueAt(n).copy());
+        context.pushToDataStack(copy);
     }
 }

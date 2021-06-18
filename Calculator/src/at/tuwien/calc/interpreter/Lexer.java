@@ -8,6 +8,10 @@ import at.tuwien.calc.stream.QueueCommandStream;
  * A lexer converts a stream (or sequence) of characters into a sequence of
  * language specific tokens which do have unique meaning for the application
  * context.
+ * <p>
+ * This is the most simplistic lexer possible which simply reads characters
+ * from the input and uses those characters as tokens.
+ * </p>
  */
 public class Lexer {
 

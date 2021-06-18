@@ -18,13 +18,14 @@ import java.util.regex.Pattern;
 @ExecutionMode
 public class ReadInputCommand implements ICommand {
 
+    private static final Pattern pattern = Pattern.compile("'");
+
     @Override
     public Pattern getCommandPattern() {
-        return null;
+        return pattern;
     }
 
     @Override
     public void apply(IContext context, Character command) {
-
     }
 }

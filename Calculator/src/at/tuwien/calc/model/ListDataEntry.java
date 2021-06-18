@@ -39,6 +39,14 @@ public class ListDataEntry implements IDataEntry<String> {
     }
 
     @Override
+    public int compareTo(IDataEntry o) {
+        if (o instanceof ListDataEntry) {
+            return get().compareTo(((ListDataEntry) o).get());
+        }
+        return 0;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
