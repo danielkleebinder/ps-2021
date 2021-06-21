@@ -2,12 +2,12 @@
   "name": "interpreter",
   "version": "1.0.0",
   "description": "",
-  "main": "src/main.js",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/main.js --demo",
+    "start": "node src/index.js --demo",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "build": "babel src --out-dir build && pkg -t linux,win -o interpreter build/main.js"
+    "build": "babel src --out-dir build && pkg -t linux,win -o interpreter build/index.js"
   },
   "author": "",
   "license": "ISC",
