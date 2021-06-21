@@ -1,3 +1,7 @@
+/**
+ * This file defines the available tokens which are used by the lexer.
+ */
+
 const Tokens = {
   Integer: "INT",     // 0-9
   Negate: "NEGATE",   // -

@@ -1,6 +1,12 @@
 import parseArgs from "minimist";
 import processInput from "./main.js";
 
+/**
+ * This file is the entry point for the application
+ * It parses the arguments and executes the given expression
+ * or the demo
+ */
+
 const args = parseArgs(process.argv);
 const debug = args["v"] || args['verbose'];
 
