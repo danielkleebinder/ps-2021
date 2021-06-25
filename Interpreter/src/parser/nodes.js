@@ -1,7 +1,7 @@
-/*************************************************************************/
-/* Defines the nodes of the abstract syntax tree                         */
+/**
+ * This file defines the nodes for the abstract snytax tree
+ */
 
-/*************************************************************************/
 
 /**
  * The root node contains a bunch of statements at the programs root level.
@@ -33,6 +33,9 @@ class BinaryOperationNode {
   }
 }
 
+/**
+ * Enum-like object of the available binary operations
+ */
 const BinaryOperations = {
   PLUS: "PLUS",
   MINUS: "MINUS",
@@ -40,6 +43,10 @@ const BinaryOperations = {
   MULT: "MULT",
 };
 
+/**
+ * Unary operations consist of one operand and an operation that has
+ * to be evaluated.
+ */
 class UnaryOperationNode {
   constructor(node, op) {
     this.node = node;
@@ -47,10 +54,18 @@ class UnaryOperationNode {
   }
 }
 
+/**
+ * Enum-like object of the available unary operations
+ */
 const UnaryOperations = {
   NEGATE: "-",
 };
 
+/**
+ * A conditional node which consists of a condition,
+ * a ifCase which represents the leaf if the condition is true
+ * a elseCase which represents the leaf if the condition is false
+ */
 class ConditionNode {
   constructor(condition, ifCase, elseCase) {
     this.condition = condition;
@@ -59,18 +74,29 @@ class ConditionNode {
   }
 }
 
+/**
+ * A node representing a recording.
+ * Consisting of multiple PairsNodes
+ */
 class RecordNode {
   constructor(pairsNode) {
     this.pairsNode = pairsNode;
   }
 }
 
+/**
+ * A node representing a pair <name> = <expr>
+ */
 class PairsNode {
   constructor(pairs = []) {
     this.pairs = pairs;
   }
 }
 
+/**
+ * A node representing an assignment.
+ * Consisting of the identifier and the assigned expression
+ */
 class AssignNode {
   constructor(identifier, assignmentExpr) {
     this.identifier = identifier;
@@ -78,12 +104,20 @@ class AssignNode {
   }
 }
 
+/**
+ * A node representing a variable accessor.
+ * Consisting of the identifier.
+ */
 class AccessNode {
   constructor(identifier) {
     this.identifier = identifier;
   }
 }
 
+/**
+ * A node representing a function.
+ * It consists of the arguments of the function and the body
+ */
 class FunctionNode {
   constructor(argument, body) {
     this.argument = argument;
@@ -91,6 +125,11 @@ class FunctionNode {
   }
 }
 
+/**
+ * A node representing a function call.
+ * It consists of the name of the function which is called 
+ * and the arguments used as parameters
+ */
 class FunctionCallNode {
   constructor(name, argument) {
     this.name = name;

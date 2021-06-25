@@ -4,14 +4,13 @@ import Keywords from "./keywords.js";
 
 let nameRegex = /[a-z]/;
 
-
+/**
+ * This class tokenizes the given input to an array of tokens.
+ */
 class Lexer {
 
   #programCode = "";
   #cursorPosition = 0;
-
-
-  // TODO: refactor methods to createName and createArrow so simplify code (maybe a move to an index-based loop is necessary)
 
   /**
    * Tokenizes the given input.

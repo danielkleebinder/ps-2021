@@ -1,8 +1,8 @@
 import { Tokens } from "./token.js";
 
-
-// TODO: Maybe move the keywords to the parser and only save them here as names
-// because currently the generated tokens do not match the EBNF
+/**
+ * Maps predefined keywords to tokens.
+ */
 const Keywords = {
   plus: Tokens.Plus,
   minus: Tokens.Minus,

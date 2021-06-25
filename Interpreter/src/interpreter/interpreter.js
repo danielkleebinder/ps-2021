@@ -15,7 +15,9 @@ import {
   UnaryOperations,
 } from "../parser/nodes.js";
 
-
+/**
+ * This class interpretes a given AST and evaluates each node.
+ */
 class Interpreter {
 
   #globalSymbols;
