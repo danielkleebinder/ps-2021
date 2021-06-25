@@ -23,6 +23,9 @@ public class MultiplicationOperation implements ICommand {
 
     @Override
     public void apply(IContext context, Character command) {
+        if (context.getDataStackSize() < 2) {
+            return;
+        }
         var factor2 = context.<DoubleDataEntry>popFromDataStack().get();
         var factor1 = context.<DoubleDataEntry>popFromDataStack().get();
         var result = factor1 * factor2;

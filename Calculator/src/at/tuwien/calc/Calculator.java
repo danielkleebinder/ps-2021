@@ -27,7 +27,7 @@ public class Calculator {
 
         this.interpreter = new Interpreter();
         this.context = new CalculatorContext(new QueueCommandStream(), outputStream);
-        this.interpreter.setExtensiveLogging(false);
+        this.interpreter.setExtensiveLogging(true);
 
         this.setupPreDefinedPrograms();
     }
@@ -59,6 +59,7 @@ public class Calculator {
      */
     private void setupPreDefinedPrograms() {
         IDataEntry calculateOctahedronSurfaceArea = new ListDataEntry("2!*2*3_*");
+        IDataEntry calculateFactorial = new ListDataEntry("(3!3!1-2!1=4!()(4!4$1+$@)@2$*)3!3$3!@2$");
         IDataEntry calculateTriangleArea = new ListDataEntry("" +
                 "(2!6!-2!*)@(4!8!-2!*)@(6!10!-2!*)@++_" +
                 "(3!10!-2!*)@(5!12!-2!*)@(7!14!-2!*)@++_" +
@@ -67,8 +68,17 @@ public class Calculator {
                 "(4!4!4!++2/)@" +
                 "(2!4!-)@(3!6!-)@(4!8!-)@***_" +
                 "2$2$2$");
+        IDataEntry calculateTriangleAreaSums = new ListDataEntry("" +
+                "(3!3!1-2!0=4!" +
+                "()(4!4$1+$@)@2$1$" +
+                "   (11!11!11!11!11!11!11!11!11!" +
+                "    11$11$11$11$11$11$11$11$11$" +
+                "    X@(+)\\)\\)" +
+                "3!3$3!@2$1$");
 
+        this.context.setRegisterValue('w', calculateFactorial);
         this.context.setRegisterValue('x', calculateTriangleArea);
+        this.context.setRegisterValue('y', calculateTriangleAreaSums);
         this.context.setRegisterValue('z', calculateOctahedronSurfaceArea);
     }
 }

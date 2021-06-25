@@ -1,7 +1,6 @@
 package at.tuwien.calc.model;
 
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 
 /**
@@ -61,8 +60,6 @@ public class ListDataEntry implements IDataEntry<String> {
 
     @Override
     public String toString() {
-        return "List=" + data.chars()
-                .mapToObj(c -> (char) c)
-                .collect(Collectors.toList());
+        return "List=(" + data.toString() + ")";
     }
 }

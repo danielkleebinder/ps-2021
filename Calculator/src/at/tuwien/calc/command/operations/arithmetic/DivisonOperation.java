@@ -25,6 +25,9 @@ public class DivisonOperation implements ICommand {
 
     @Override
     public void apply(IContext context, Character command) {
+        if (context.getDataStackSize() < 2) {
+            return;
+        }
         var divisor = context.<DoubleDataEntry>popFromDataStack().get();
         var dividend = context.<DoubleDataEntry>popFromDataStack().get();
         if (divisor <= epsilon && divisor >= -epsilon) {

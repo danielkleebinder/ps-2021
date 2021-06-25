@@ -23,6 +23,9 @@ public class PlusOperation implements ICommand {
 
     @Override
     public void apply(IContext context, Character command) {
+        if (context.getDataStackSize() < 2) {
+            return;
+        }
         DoubleDataEntry term1 = context.popFromDataStack();
         DoubleDataEntry term2 = context.popFromDataStack();
         var result = term1.get() + term2.get();

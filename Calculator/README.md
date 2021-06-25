@@ -44,6 +44,23 @@ Where the corners are represented by the first 9 inputs in the form `X Y Z`. The
 One can see that a lot of data stack manipulation needs to be done to execute programs like these.
 
 ### Sum of Triangle Surfaces
+The program to calculate the collective sum of surface areas of multiple triangles is in register Y. You can use this program as follows:
+
+```
+0 0 0 1 0 0 0 1 0 0 0 0 1 0 0 0 1 0 0 0 0 1 0 0 0 1 0 3 Y@
+```
+
+```
+0 0 0 1 0 0 0 1 0                   // Triangle 1
+0 0 0 1 0 0 0 1 0                   // Triangle 2
+2                                   // Number of triangles
+(3!3!1-2!0=4!                       // Do the recursion
+()(4!4$1+$@)@2$1$                   // Do the conditional to stop the recursion
+    (11!11!11!11!11!11!11!11!11!    // Copy triangle coordinates in front of function call
+     11$11$11$11$11$11$11$11$11$    // Delete old copies
+     X@(+)\)\)                      // Run area computation and sum up
+3!3$3!@2$1$
+```
 
 ### Surface of an Octahedron
 This program computes the surface area of an octahedron. You can use this program as follows:

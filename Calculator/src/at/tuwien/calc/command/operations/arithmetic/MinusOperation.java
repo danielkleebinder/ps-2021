@@ -22,6 +22,9 @@ public class MinusOperation implements ICommand {
 
     @Override
     public void apply(IContext context, Character command) {
+        if (context.getDataStackSize() < 2) {
+            return;
+        }
         DoubleDataEntry subtrahend = context.popFromDataStack();
         DoubleDataEntry minuend = context.popFromDataStack();
         var result = minuend.get() - subtrahend.get();
