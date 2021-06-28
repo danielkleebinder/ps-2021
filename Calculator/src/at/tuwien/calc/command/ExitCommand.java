@@ -20,7 +20,7 @@ public class ExitCommand implements ICommand {
 
     @Override
     public void apply(IContext context, Character command) {
-        context.writeLine("Bye ❤❤❤");
+        context.writeLine("Bye <3");
         System.exit(0);
     }
 }

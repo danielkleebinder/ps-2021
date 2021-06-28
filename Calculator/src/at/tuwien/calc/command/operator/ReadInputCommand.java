@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 /**
  * Read input ’\’’ (single quote) waits until the input stream contains a line (terminated
- * by “enter”) and converts the line (except of “enter”) to an input value: If the characters
+ * by "enter") and converts the line (except of "enter") to an input value: If the characters
  * in the line can be interpreted as a number, the input value is the corresponding number. Otherwise
  * if the line is well-formed (this is, if there are parentheses, opening and closing parentheses
  * match), the input value is a list containing the sequence of characters in the line. Otherwise (not

@@ -1,13 +1,49 @@
 # Calculator
 
+## Execution
+The program runs with Java 11 making use of features like ``var``. Therefore, at least Java 11 has to be installed to run the program. You
+can execute it either by running it inside some IDE like IntelliJ or via CLI using the following commands:
+
+```
+javac -d bin -sourcepath src -cp "." src/at/tuwien/calc/Main.java
+cd bin/
+java at/tuwien/calc/Main
+```
+
+The following prompt will occur:
+
+```
+Write ; and press ENTER to exit the calculator. The following programs are pre-installed:
+  - W: Factorial (e.g. '6 W@' will output 720)
+  - X: Triangle Area (e.g. '0 0 0 1 0 0 0 1 0 X@' will output 0.49999)
+  - Y: Sum of Triangle Areas (e.g. '0 0 0 1 0 0 0 1 0 0 0 0 1 0 0 0 1 0 2 Y@' will output 0.99999)
+  - Z: Octahedron Surface Area (e.g. '2 Z@' will output [13.856406460551018, 13.856406460551021])
+>
+```
+
+You can now run any stack based calculations. For example
+
+```
+> 7 3 1 + *
+28.0
+```
+
+## Design Decisions
+Java was the programming language of our choice since all three (initial) team members know Java (as statically typed language) the best. Java
+has versatile areas of application and brings a lot of utility out of the box. Including garbage collection and platform independence.
+
+We wanted to use a very lightweight version of the lexer, parser, interpreter pattern. However, we omitted the parser and simplified
+the lexer to quite some extent since the interpreter did a more than sufficient job using the annotation and operation mode based command
+technique.
+
+We also tried to use inheritance as little as possible and relied on interfaces and annotations to configure the commands.
+
 ## Contributors
 The following list shows all contributors (people who committed code) and on which package they worked.
 
 | Package                | Contributor         |
 |------------------------|---------------------|
-| Architecture & Parser  | Daniel Kleebinder   |
-| Number & Decimals      | Daniel Kleebinder   |
-| Lists                  | Daniel Kleebinder   |
+| Numbers & Decimals     | Daniel Kleebinder   |
 | Registers              | Christian Schweiger |
 | Arithmetic Operators   | Christian Schweiger |
 | Logical Operators      | Christian Schweiger |

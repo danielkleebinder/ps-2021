@@ -64,7 +64,7 @@ The handling of the parameters, including demo mode, vebose output and expressio
 ## Design decisions
 For our application we choose Javascript because it is a lightweight, dynamically typed language.
 It is similar to Python but uses a more C-like syntax with curly brackets etc.
-Originally Javascript was developed for the web but since the invention of NodeJs it can also be usesd for more traditional programs.
+Originally Javascript was developed for the web but since the invention of NodeJS it can also be usesd for more traditional programs.
 For our application we choose to use the ECMAScript 6 (ES6) for more readable code. This also allowed us to use the classes keyword which only is syntactic sugar. In the background the protoype-based inheritance model is still used.
 
 Our application is split into three different components: 

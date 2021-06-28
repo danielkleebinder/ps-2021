@@ -27,7 +27,7 @@ public class Calculator {
 
         this.interpreter = new Interpreter();
         this.context = new CalculatorContext(new QueueCommandStream(), outputStream);
-        this.interpreter.setExtensiveLogging(true);
+        this.interpreter.setExtensiveLogging(false);
 
         this.setupPreDefinedPrograms();
     }
