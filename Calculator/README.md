@@ -50,16 +50,24 @@ The program to calculate the collective sum of surface areas of multiple triangl
 0 0 0 1 0 0 0 1 0 0 0 0 1 0 0 0 1 0 0 0 0 1 0 0 0 1 0 3 Y@
 ```
 
+The program to compute the sum of all triangle areas is shown (and explained) below:
+
 ```
-0 0 0 1 0 0 0 1 0                   // Triangle 1
-0 0 0 1 0 0 0 1 0                   // Triangle 2
-2                                   // Number of triangles
-(3!3!1-2!0=4!                       // Do the recursion
-()(4!4$1+$@)@2$1$                   // Do the conditional to stop the recursion
-    (11!11!11!11!11!11!11!11!11!    // Copy triangle coordinates in front of function call
-     11$11$11$11$11$11$11$11$11$    // Delete old copies
-     X@(+)\)\)                      // Run area computation and sum up
-3!3$3!@2$1$
+0 0 0 1 0 0 0 1 0                       // Triangle 1
+0 0 0 1 0 0 0 1 0                       // Triangle 2
+0 0 0 1 0 0 0 1 0                       // Triangle 3
+3                                       // Number of triangles
+(5!4!4!1-3!3!-                          // Calculate recursion parameters and recursion depth counter
+ 4*14+                                  // Calculate stack copy offset for next triangle
+ 2!!3!!4!!5!!6!!7!!8!!9!!10!!           // Copy triangle on top of stack
+ 11!$11!$11!$11!$11!$11!$11!$11!$11!$   // Delete old triangle values
+ X@                                     // Compute triangle surface
+ 5!5!4$4$4$2!                           // Do recursion
+ 1=6!(1$1$)(4!4$1+$@)                   // Recursion conditional
+ @2$2$2$+)                              // Sum up the surfaces
+12!12!12!12!12!12!12!12!12!             // First triangle copy
+12$12$12$12$12$12$12$12$12$             // First triangle delete
+X@4!5!5$5!@2$                           // Compute surface and clean up
 ```
 
 ### Surface of an Octahedron
@@ -72,7 +80,20 @@ This program computes the surface area of an octahedron. You can use this progra
 where the first parameter indicates the length of the octahedrons sides. The program code is shown below:
 
 ```
-2!*2*3_*
+(2!3!*2*3_*)@           // Compute octahedron surface (2*a^2*sqrt(3))
+(3!2/,4!3_*2/,0)@       // Compute first corner coordinates
+(6!6$,0,0)@             // Compute second corner coordinates
+(0,0,0)@                // Compute third corner coordinates
+X@                      // Run triangle surface program
+8*                      // Mult with 8 since an octahedron has 8 sides of same area
 ```
+
+This will output two values on the data stack:
+1. The surface area according to the octahedrons formula and
+2. The surface area using the calculators own triangle programs.
+
+The second approach where the calculators register programs for triangle surface areas are used makes use of the fact, that
+all sides of an octahedron have the same side lengths and therefore the same surface area. This means that only the surface
+of one triangle out of 8 has to be calculated and multiplied with 8 to compute the whole octahedron surface area.
 
 (See: https://en.wikipedia.org/wiki/Octahedron)
