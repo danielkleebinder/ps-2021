@@ -2,7 +2,7 @@
 
 ## Execution
 The program runs with Java 11 making use of features like ``var``. Therefore, at least Java 11 has to be installed to run the program. You
-can execute it either by running it inside some IDE like IntelliJ or via CLI using the following commands:
+can execute it either by running it inside some IDE like IntelliJ, by executing `Calculator.jar` or via CLI using the following commands:
 
 ```
 javac -d bin -sourcepath src -cp "." src/at/tuwien/calc/Main.java
