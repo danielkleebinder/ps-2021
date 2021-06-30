@@ -25,7 +25,6 @@ public class CalculatorContext implements IContext {
 
     private int operationMode = 0;
 
-    // TODO: Is this command stream really necessary? Maybe same as from the lexer?
     private final ICommandStream commandStream;
     private final IOutputStream outputStream;
 
