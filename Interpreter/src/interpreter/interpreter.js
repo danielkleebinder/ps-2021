@@ -56,7 +56,7 @@ class Interpreter {
         return this.#evalNode(node.leftNode) - this.#evalNode(node.rightNode);
       case BinaryOperations.MULT:
         return this.#evalNode(node.leftNode) * this.#evalNode(node.rightNode);
-      case BinaryOperations.DIV: // TODO: Check for division by null
+      case BinaryOperations.DIV:
         return this.#evalNode(node.leftNode) / this.#evalNode(node.rightNode);
     }
   }
